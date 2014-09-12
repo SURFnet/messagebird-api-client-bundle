@@ -2,5 +2,10 @@
     "name": "surfnet/messagebird-api-client-bundle",
     "description": "A Symfony2 bundle to integrate MessageBird's messaging service.",
     "license": "Apache-2.0",
-    "minimum-stability": "stable"
+    "minimum-stability": "stable",
+    "autoload": {
+        "psr-4": {
+            "Surfnet\\MessageBirdApiClient": ""
+        }
+    }
 }

@@ -4,8 +4,9 @@
     "license": "Apache-2.0",
     "minimum-stability": "stable",
     "autoload": {
-        "psr-4": {
-            "Surfnet\\MessageBirdApiClient\\": ""
+        "psr-0": {
+            "Surfnet\\MessageBirdApiClient\\": "src",
+            "Surfnet\\MessageBirdApiClientBundle\\": "src"
         }
     },
     "require-dev": {

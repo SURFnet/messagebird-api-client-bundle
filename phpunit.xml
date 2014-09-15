@@ -12,12 +12,13 @@
          bootstrap="vendor/autoload.php">
     <testsuites>
         <testsuite name="Test Suite">
-            <directory>Tests</directory>
+            <directory>src/Surfnet/MessageBirdApiClient/Tests</directory>
+            <directory>src/Surfnet/MessageBirdApiClientBundle/Tests</directory>
         </testsuite>
     </testsuites>
     <filter>
         <whitelist processUncoveredFilesFromWhitelist="true">
-            <directory>.</directory>
+            <directory>src</directory>
         </whitelist>
     </filter>
 </phpunit>

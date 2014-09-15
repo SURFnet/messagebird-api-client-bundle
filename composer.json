@@ -5,7 +5,10 @@
     "minimum-stability": "stable",
     "autoload": {
         "psr-4": {
-            "Surfnet\\MessageBirdApiClient": ""
+            "Surfnet\\MessageBirdApiClient\\": ""
         }
+    },
+    "require-dev": {
+        "ibuildings/qa-tools": "~1.1"
     }
 }

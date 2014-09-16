@@ -17,6 +17,7 @@
         "symfony/http-kernel": "~2"
     },
     "require-dev": {
-        "ibuildings/qa-tools": "~1.1"
+        "ibuildings/qa-tools": "~1.1",
+        "matthiasnoback/symfony-config-test": "0.*"
     }
 }

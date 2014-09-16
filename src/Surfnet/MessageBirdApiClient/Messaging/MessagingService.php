@@ -134,11 +134,11 @@ class MessagingService
                 $errors
             );
         } elseif ($statusCode >= 400 && $statusCode < 500) {
-            throw new ApiDomainException("A client error occurred ($statusCode).", $errors);
+            throw new ApiDomainException(sprintf('A client error occurred (%d).', $statusCode), $errors);
         } elseif ($statusCode >= 500 && $statusCode < 600) {
             throw new ApiRuntimeException('A server error occurred.', $errors);
         } else {
-            throw new ApiRuntimeException("The server responded with an unexpected HTTP status code ($statusCode).", $errors);
+            throw new ApiRuntimeException(sprintf('The server responded with an unexpected HTTP status code (%s).', $statusCode), $errors);
         }
     }
 }

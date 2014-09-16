@@ -18,7 +18,6 @@
 
 namespace Surfnet\MessageBirdApiClient\Tests\Messaging;
 
-use GuzzleHttp\Client;
 use Surfnet\MessageBirdApiClient\Messaging\Message;
 
 class MessageTest extends \PHPUnit_Framework_TestCase

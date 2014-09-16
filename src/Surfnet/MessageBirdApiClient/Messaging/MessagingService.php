@@ -21,11 +21,10 @@ namespace Surfnet\MessageBirdApiClient\Messaging;
 use GuzzleHttp\ClientInterface;
 use GuzzleHttp\Exception\ClientException as GuzzleClientException;
 use GuzzleHttp\Exception\ServerException as GuzzleServerException;
-use GuzzleHttp\Exception\TransferException as GuzzleTransferException;
 use Surfnet\MessageBirdApiClient\Exception\ApiDomainException;
+use Surfnet\MessageBirdApiClient\Exception\ApiRuntimeException;
 use Surfnet\MessageBirdApiClient\Exception\DomainException;
 use Surfnet\MessageBirdApiClient\Exception\InvalidAccessKeyException;
-use Surfnet\MessageBirdApiClient\Exception\ApiRuntimeException;
 use Surfnet\MessageBirdApiClient\Exception\UnprocessableMessageException;
 
 class MessagingService

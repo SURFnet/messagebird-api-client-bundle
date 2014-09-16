@@ -20,7 +20,7 @@ namespace Surfnet\MessageBirdApiClient\Exception;
 
 use Exception;
 
-class ApiRuntimeException extends RuntimeException
+class ApiRuntimeException extends RuntimeException implements ApiException
 {
     /**
      * @var array

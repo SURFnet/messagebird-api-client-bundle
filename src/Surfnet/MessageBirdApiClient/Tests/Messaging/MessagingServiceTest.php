@@ -181,4 +181,40 @@ class MessagingServiceTest extends \PHPUnit_Framework_TestCase
             throw $e;
         }
     }
+
+    public function testThrowsApiRuntimeExceptionWhenDeliveryInfoMissing()
+    {
+        $this->setExpectedException('Surfnet\MessageBirdApiClient\Exception\ApiRuntimeException', 'delivery information is missing');
+
+        $http = new Client;
+        $http->getEmitter()->attach(new Mock([__DIR__ . '/fixtures/it-throws-when-delivery-info-missing.txt']));
+
+        $messaging = new MessagingService($http, 'SURFnet');
+
+        try {
+            $messaging->send(new Message('31612345678', 'This is a text message.'));
+        } catch (ApiRuntimeException $e) {
+            $this->assertEquals('', $e->getErrorString());
+
+            throw $e;
+        }
+    }
+
+    public function testThrowsApiRuntimeExceptionWhenUnknownStatusCode()
+    {
+        $this->setExpectedException('Surfnet\MessageBirdApiClient\Exception\ApiRuntimeException', 'unexpected HTTP status code');
+
+        $http = new Client;
+        $http->getEmitter()->attach(new Mock([__DIR__ . '/fixtures/101-switching-protocols.txt']));
+
+        $messaging = new MessagingService($http, 'SURFnet');
+
+        try {
+            $messaging->send(new Message('31612345678', 'This is a text message.'));
+        } catch (ApiRuntimeException $e) {
+            $this->assertEquals('', $e->getErrorString());
+
+            throw $e;
+        }
+    }
 }

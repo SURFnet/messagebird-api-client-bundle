@@ -109,35 +109,36 @@ class MessagingService
     /**
      * Throws meaningful exceptions when possible (4xx-5xx status codes), ApiRuntimeExceptions when it cannot.
      *
-     * @param array $document
+     * @param mixed $document
      * @param int $statusCode
      * @throws InvalidAccessKeyException Thrown when the server doesn't accept the configured API access key.
      * @throws UnprocessableMessageException Thrown when the server doesn't accept the format of the sent message.
      * @throws ApiDomainException
-     * @throws ApiRuntimeException
      */
-    private function handleHttpErrors(array $document, $statusCode)
+    private function handleHttpErrors($document, $statusCode)
     {
-        if (!isset($document['errors']) || !is_array($document['errors'])) {
-            throw new ApiRuntimeException('The server did not a valid response; error information is missing', []);
+        if (isset($document['errors']) && is_array($document['errors'])) {
+            $errors = $document['errors'];
+        } else {
+            $errors = [];
         }
 
         if ($statusCode === 401) {
             throw new InvalidAccessKeyException(
                 'An invalid access key was used to access the MessageBird API.',
-                $document['errors']
+                $errors
             );
         } elseif ($statusCode === 422) {
             throw new UnprocessableMessageException(
                 'The message could not be processed by MessageBird.',
-                $document['errors']
+                $errors
             );
         } elseif ($statusCode >= 400 && $statusCode < 500) {
-            throw new ApiDomainException("A client error occurred ($statusCode).", $document['errors']);
+            throw new ApiDomainException("A client error occurred ($statusCode).", $errors);
         } elseif ($statusCode >= 500 && $statusCode < 600) {
-            throw new ApiRuntimeException('A server error occurred.', $document['errors']);
+            throw new ApiRuntimeException('A server error occurred.', $errors);
         } else {
-            throw new ApiRuntimeException("The server responded with an unexpected HTTP status code ($statusCode).", $document['errors']);
+            throw new ApiRuntimeException("The server responded with an unexpected HTTP status code ($statusCode).", $errors);
         }
     }
 }

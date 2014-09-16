@@ -1,0 +1,52 @@
+POST /messages HTTP/1.1
+Accept: application/json
+Accept-Encoding: gzip, deflate, compress
+Authorization:  AccessKey invalid_key
+Content-Length: 89
+Content-Type: application/json; charset=utf-8
+Host: rest.messagebird.com
+User-Agent: HTTPie/0.8.0
+
+{
+    "body": "HTTP status code test",
+    "originator": "unprocessable",
+    "recipients": "ajf8932"
+}
+
+HTTP/1.1 401 Authorization Required
+Access-Control-Allow-Credentials: true
+Access-Control-Allow-Headers: Authorization
+Access-Control-Allow-Methods: GET, POST, PUT, DELETE
+Access-Control-Allow-Origin: http://support.messagebird.com
+Cache-Control: no-cache, must-revalidate
+Connection: close
+Content-Length: 363
+Content-Type: application/json
+Date: Mon, 15 Sep 2014 14:16:13 GMT
+Expires: 0
+Pragma: no-cache
+Server: Apache
+Vary: Authorization
+WWW-Authenticate: Basic realm="MessageBird API authentication"
+X-Powered-By: PHP/5.5.12-1~dotdeb.1
+X-UA-Compatible: IE=edge,chrome=1
+
+{
+    "errors": [
+        {
+            "code": 2,
+            "description": "Request not allowed (incorrect access_key)",
+            "parameter": "access_key"
+        },
+        {
+            "code": 9,
+            "description": "no (correct) recipients found",
+            "parameter": "recipient"
+        },
+        {
+            "code": 10,
+            "description": "originator is invalid",
+            "parameter": "originator"
+        }
+    ]
+}

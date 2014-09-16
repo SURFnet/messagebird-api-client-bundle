@@ -24,7 +24,7 @@
 	"enablePhpLint": true,
 	"enablePhpMessDetector": true,
 	"phpMdExcludePatterns": [
-
+		"*\/Tests\/*"
 	],
 	"enablePhpCodeSniffer": true,
 	"phpCodeSnifferCodingStyle": "PSR2",

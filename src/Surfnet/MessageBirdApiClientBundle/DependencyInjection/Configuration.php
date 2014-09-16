@@ -44,8 +44,8 @@ class Configuration implements ConfigurationInterface
                                     || empty($parts['scheme'])
                                     || empty($parts['host']);
                             })
-                                ->thenInvalid("Invalid base URL '%s': scheme and host are required.")
-                            ->end()
+                            ->thenInvalid("Invalid base URL '%s': scheme and host are required.")
+                        ->end()
                     ->end()
                     ->scalarNode('authorization')
                         ->validate()

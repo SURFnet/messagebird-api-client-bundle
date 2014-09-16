@@ -146,19 +146,32 @@ class MessagingServiceTest extends \PHPUnit_Framework_TestCase
         }
     }
 
-    public function testThrowsApiRuntimeExceptionsOn500StatusCode()
+    public function statusCodes5xx()
+    {
+        return [
+            [__DIR__ . '/fixtures/500-server-error.txt', '(#9) no (correct) recipients found'],
+            [__DIR__ . '/fixtures/503-service-unavailable.txt', ''],
+        ];
+    }
+
+    /**
+     * @dataProvider statusCodes5xx
+     * @param string $fixture Filename to HTTP response fixture.
+     * @param string $errorString
+     */
+    public function testThrowsApiRuntimeExceptionsOn5xxStatusCode($fixture, $errorString)
     {
         $this->setExpectedException('Surfnet\MessageBirdApiClient\Exception\ApiRuntimeException', 'server error');
 
         $http = new Client;
-        $http->getEmitter()->attach(new Mock([__DIR__ . '/fixtures/500-server-error.txt']));
+        $http->getEmitter()->attach(new Mock([$fixture]));
 
         $messaging = new MessagingService($http, 'SURFnet');
 
         try {
             $messaging->send(new Message('31612345678', 'This is a text message.'));
         } catch (ApiRuntimeException $e) {
-            $this->assertEquals('', $e->getErrorString());
+            $this->assertEquals($errorString, $e->getErrorString());
 
             throw $e;
         }

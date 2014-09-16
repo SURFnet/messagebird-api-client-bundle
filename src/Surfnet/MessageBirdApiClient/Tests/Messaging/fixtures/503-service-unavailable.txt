@@ -1,4 +1,4 @@
-HTTP/1.1 500 Internal Server Error
+HTTP/1.1 503 Service Unavailable
 Access-Control-Allow-Credentials: true
 Access-Control-Allow-Headers: Authorization
 Access-Control-Allow-Methods: GET, POST, PUT, DELETE
@@ -16,11 +16,5 @@ X-Powered-By: PHP/5.5.12-1~dotdeb.1
 X-UA-Compatible: IE=edge,chrome=1
 
 {
-    "errors": [
-        {
-            "code": 9,
-            "description": "no (correct) recipients found",
-            "parameter": "recipient"
-        }
-    ]
+    "errors": []
 }

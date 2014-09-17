@@ -34,7 +34,10 @@ A Symfony2 bundle to integrate MessageBird's messaging service.
 ```php
 public function fooAction()
 {
-    $message = new \Surfnet\MessageBirdApiClient\Messaging\Message('31612345678', 'Your one-time SMS security token: 9832');
+    $message = new \Surfnet\MessageBirdApiClient\Messaging\Message(
+        '31612345678',
+        'Your one-time SMS security token: 9832'
+    );
     
     /** @var \Surfnet\MessageBirdApiClientBundle\Service\MessagingService $messaging */
     $messaging = $this->get('surfnet_message_bird_api_client.messaging');

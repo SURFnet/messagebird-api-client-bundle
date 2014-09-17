@@ -215,7 +215,7 @@ class MessagingServiceTest extends \PHPUnit_Framework_TestCase
         return [
             'Integer instead of string' => [0],
             'NULL instead of string'    => [null],
-            'object instead of string' => [new \stdClass],
+            'object instead of string'  => [new \stdClass],
         ];
     }
 

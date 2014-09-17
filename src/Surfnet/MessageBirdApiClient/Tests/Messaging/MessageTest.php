@@ -22,14 +22,6 @@ use Surfnet\MessageBirdApiClient\Messaging\Message;
 
 class MessageTest extends \PHPUnit_Framework_TestCase
 {
-    public function invalidRecipientTypes()
-    {
-        return [
-            'Not a phone number, but NULL' => [null],
-            'Not a phone number, but an object' => [new \stdClass],
-        ];
-    }
-
     /**
      * @dataProvider invalidRecipientTypes
      * @param mixed $recipient
@@ -41,14 +33,6 @@ class MessageTest extends \PHPUnit_Framework_TestCase
         new Message($recipient, 'body');
     }
 
-    public function invalidRecipientFormats()
-    {
-        return [
-            'Empty phone number' => [''],
-            'Non-numeric phone number' => ['8d98ap'],
-        ];
-    }
-
     /**
      * @dataProvider invalidRecipientFormats
      * @param string $recipient
@@ -58,15 +42,6 @@ class MessageTest extends \PHPUnit_Framework_TestCase
         $this->setExpectedException('Surfnet\MessageBirdApiClient\Exception\DomainException');
 
         new Message($recipient, 'body');
-    }
-
-    public function invalidBodyTypes()
-    {
-        return [
-            'Not a string, but NULL' => [null],
-            'Not a string, but an object' => [new \stdClass],
-            'Not a string, but an integer' => [3],
-        ];
     }
 
     /**
@@ -90,5 +65,30 @@ class MessageTest extends \PHPUnit_Framework_TestCase
     {
         $message = new Message('31612345678', 'body');
         $this->assertEquals('body', $message->getBody());
+    }
+
+    public function invalidRecipientTypes()
+    {
+        return [
+            'Not a phone number, but NULL' => [null],
+            'Not a phone number, but an object' => [new \stdClass],
+        ];
+    }
+
+    public function invalidRecipientFormats()
+    {
+        return [
+            'Empty phone number' => [''],
+            'Non-numeric phone number' => ['8d98ap'],
+        ];
+    }
+
+    public function invalidBodyTypes()
+    {
+        return [
+            'Not a string, but NULL' => [null],
+            'Not a string, but an object' => [new \stdClass],
+            'Not a string, but an integer' => [3],
+        ];
     }
 }

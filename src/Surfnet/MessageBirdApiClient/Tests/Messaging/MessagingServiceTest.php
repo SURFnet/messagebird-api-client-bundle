@@ -28,18 +28,6 @@ use Surfnet\MessageBirdApiClient\Messaging\MessagingService;
 
 class MessagingServiceTest extends \PHPUnit_Framework_TestCase
 {
-    public function invalidOriginators()
-    {
-        return [
-            'Too long' => ['ThisIsTooLon'],
-            'InvalidCharacters' => ['its.invalid'],
-            'Too short' => [''],
-            'Not a string #1' => [0],
-            'Not a string #2' => [null],
-            'Not a string #3' => [new \stdClass],
-        ];
-    }
-
     /**
      * @dataProvider invalidOriginators
      * @param mixed $originator
@@ -49,15 +37,6 @@ class MessagingServiceTest extends \PHPUnit_Framework_TestCase
         $this->setExpectedException('Surfnet\MessageBirdApiClient\Exception\DomainException');
 
         new MessagingService(new Client, $originator);
-    }
-
-    public function validOriginators()
-    {
-        return [
-            'Length is max 11' => ['LengthIsOkk'],
-            'Numbers can have any length' => ['3429038382929284'],
-            'Minimum length is 1' => ['a'],
-        ];
     }
 
     /**
@@ -117,14 +96,6 @@ class MessagingServiceTest extends \PHPUnit_Framework_TestCase
         }
     }
 
-    public function other4xxStatusCodes()
-    {
-        return [
-            [__DIR__ . '/fixtures/other-4xx-404.txt', '(#20) message not found'],
-            [__DIR__ . '/fixtures/other-4xx-405.txt', ''],
-        ];
-    }
-
     /**
      * @dataProvider other4xxStatusCodes
      * @param string $fixture Filename to HTTP response fixture.
@@ -147,14 +118,6 @@ class MessagingServiceTest extends \PHPUnit_Framework_TestCase
 
             throw $e;
         }
-    }
-
-    public function statusCodes5xx()
-    {
-        return [
-            [__DIR__ . '/fixtures/500-server-error.txt', '(#9) no (correct) recipients found'],
-            [__DIR__ . '/fixtures/503-service-unavailable.txt', ''],
-        ];
     }
 
     /**
@@ -238,5 +201,42 @@ class MessagingServiceTest extends \PHPUnit_Framework_TestCase
 
             throw $e;
         }
+    }
+
+    public function invalidOriginators()
+    {
+        return [
+            'Too long' => ['ThisIsTooLon'],
+            'InvalidCharacters' => ['its.invalid'],
+            'Too short' => [''],
+            'Not a string #1' => [0],
+            'Not a string #2' => [null],
+            'Not a string #3' => [new \stdClass],
+        ];
+    }
+
+    public function validOriginators()
+    {
+        return [
+            'Length is max 11' => ['LengthIsOkk'],
+            'Numbers can have any length' => ['3429038382929284'],
+            'Minimum length is 1' => ['a'],
+        ];
+    }
+
+    public function other4xxStatusCodes()
+    {
+        return [
+            [__DIR__ . '/fixtures/other-4xx-404.txt', '(#20) message not found'],
+            [__DIR__ . '/fixtures/other-4xx-405.txt', ''],
+        ];
+    }
+
+    public function statusCodes5xx()
+    {
+        return [
+            [__DIR__ . '/fixtures/500-server-error.txt', '(#9) no (correct) recipients found'],
+            [__DIR__ . '/fixtures/503-service-unavailable.txt', ''],
+        ];
     }
 }

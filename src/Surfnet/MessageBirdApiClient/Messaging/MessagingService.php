@@ -96,7 +96,7 @@ class MessagingService
         try {
             $document = $response->json();
         } catch (\RuntimeException $e) {
-            throw new ApiRuntimeException('The server did not return valid JSON.', []);
+            throw new ApiRuntimeException('The server did not return valid JSON.', [], $e);
         }
 
         $statusCode = (int) $response->getStatusCode();

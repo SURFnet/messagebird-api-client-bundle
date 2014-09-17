@@ -31,7 +31,7 @@
             the coupling between objects for just the changeset. This needs to be fixed up stream. Till
             then, this rule is disabled for the pre-commit run.
         -->
-        <exclude name="CouplingBetweenObjects" />
+        <!--exclude name="CouplingBetweenObjects" /-->
     </rule>
 
     <rule ref="rulesets/naming.xml">

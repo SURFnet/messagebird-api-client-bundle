@@ -26,3 +26,21 @@ A Symfony2 bundle to integrate MessageBird's messaging service.
         # Max 11 alphanumeric chars or a telephone number (31612345678)
         originator: 'YourCompany'
     ```
+
+## Usage
+
+### Sending a message
+
+```php
+public function fooAction()
+{
+    $message = new \Surfnet\MessageBirdApiClient\Messaging\Message('31612345678', 'Your one-time SMS security token: 9832');
+    
+    /** @var \Surfnet\MessageBirdApiClientBundle\Service\MessagingService $messaging */
+    $messaging = $this->get('surfnet_message_bird_api_client.messaging');
+    
+    if ($messaging->send($message)) {
+        // Message has been buffered, sent or delivered.
+    }
+}
+```

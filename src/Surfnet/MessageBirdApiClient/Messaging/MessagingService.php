@@ -30,6 +30,9 @@ use Surfnet\MessageBirdApiClient\Exception\InvalidAccessKeyException;
 use Surfnet\MessageBirdApiClient\Exception\InvalidArgumentException;
 use Surfnet\MessageBirdApiClient\Exception\UnprocessableMessageException;
 
+/**
+ * @SuppressWarnings(PHPMD.CouplingBetweenObjects)
+ */
 class MessagingService
 {
     /**

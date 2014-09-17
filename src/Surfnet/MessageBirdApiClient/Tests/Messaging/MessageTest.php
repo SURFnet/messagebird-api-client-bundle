@@ -22,28 +22,45 @@ use Surfnet\MessageBirdApiClient\Messaging\Message;
 
 class MessageTest extends \PHPUnit_Framework_TestCase
 {
-    public function invalidRecipients()
+    public function invalidRecipientTypes()
     {
         return [
-            'Empty phone number' => [''],
-            'Non-numeric phone number' => ['8d98ap'],
             'Not a phone number, but NULL' => [null],
             'Not a phone number, but an object' => [new \stdClass],
         ];
     }
 
     /**
-     * @dataProvider invalidRecipients
+     * @dataProvider invalidRecipientTypes
      * @param mixed $recipient
      */
-    public function testItDetectsInvalidRecipient($recipient)
+    public function testThrowsAnInvalidArgumentExceptionWhenGivenANonStringRecipient($recipient)
+    {
+        $this->setExpectedException('Surfnet\MessageBirdApiClient\Exception\InvalidArgumentException');
+
+        new Message($recipient, 'body');
+    }
+
+    public function invalidRecipientFormats()
+    {
+        return [
+            'Empty phone number' => [''],
+            'Non-numeric phone number' => ['8d98ap'],
+        ];
+    }
+
+    /**
+     * @dataProvider invalidRecipientFormats
+     * @param string $recipient
+     */
+    public function testItThrowsOnIncorrectlyFormattedRecipient($recipient)
     {
         $this->setExpectedException('Surfnet\MessageBirdApiClient\Exception\DomainException');
 
         new Message($recipient, 'body');
     }
 
-    public function invalidBodies()
+    public function invalidBodyTypes()
     {
         return [
             'Not a string, but NULL' => [null],
@@ -53,12 +70,12 @@ class MessageTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @dataProvider invalidBodies
+     * @dataProvider invalidBodyTypes
      * @param mixed $body
      */
     public function testItDetectsInvalidBody($body)
     {
-        $this->setExpectedException('Surfnet\MessageBirdApiClient\Exception\DomainException');
+        $this->setExpectedException('Surfnet\MessageBirdApiClient\Exception\InvalidArgumentException');
 
         new Message('31612345678', $body);
     }

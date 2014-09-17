@@ -19,6 +19,7 @@
 namespace Surfnet\MessageBirdApiClient\Messaging;
 
 use Surfnet\MessageBirdApiClient\Exception\DomainException;
+use Surfnet\MessageBirdApiClient\Exception\InvalidArgumentException;
 
 class Message
 {
@@ -40,11 +41,13 @@ class Message
     /**
      * @param string $recipient
      * @param string $body
+     * @throws DomainException Thrown when the recipient is not formatted properly. See #recipient.
+     * @throws InvalidArgumentException
      */
     public function __construct($recipient, $body)
     {
         if (!is_string($recipient)) {
-            throw new DomainException('Message recipient must be string.');
+            throw new InvalidArgumentException('Message recipient must be string.');
         }
 
         if (!preg_match('~^\d+$~', $recipient)) {
@@ -52,7 +55,7 @@ class Message
         }
 
         if (!is_string($body)) {
-            throw new DomainException('Message body must be string.');
+            throw new InvalidArgumentException('Message body must be string.');
         }
 
         $this->recipient = $recipient;

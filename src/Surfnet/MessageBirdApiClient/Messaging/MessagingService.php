@@ -25,6 +25,7 @@ use Surfnet\MessageBirdApiClient\Exception\ApiDomainException;
 use Surfnet\MessageBirdApiClient\Exception\ApiRuntimeException;
 use Surfnet\MessageBirdApiClient\Exception\DomainException;
 use Surfnet\MessageBirdApiClient\Exception\InvalidAccessKeyException;
+use Surfnet\MessageBirdApiClient\Exception\InvalidArgumentException;
 use Surfnet\MessageBirdApiClient\Exception\UnprocessableMessageException;
 
 class MessagingService
@@ -47,11 +48,13 @@ class MessagingService
     /**
      * @param ClientInterface $http
      * @param string $originator See MessageService#originator.
+     * @throws DomainException Thrown when the originator is incorrectly formatted.
+     * @throws InvalidArgumentException
      */
     public function __construct(ClientInterface $http, $originator)
     {
         if (!is_string($originator)) {
-            throw new DomainException('Message originator is not a string.');
+            throw new InvalidArgumentException('Message originator is not a string.');
         }
 
         if (!preg_match('~^(\d+|[a-z0-9]{1,11})$~i', $originator)) {

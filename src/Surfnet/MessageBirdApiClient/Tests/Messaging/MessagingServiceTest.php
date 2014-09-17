@@ -29,10 +29,21 @@ use Surfnet\MessageBirdApiClient\Messaging\MessagingService;
 class MessagingServiceTest extends \PHPUnit_Framework_TestCase
 {
     /**
-     * @dataProvider invalidOriginators
+     * @dataProvider invalidOriginatorTypes
      * @param mixed $originator
      */
-    public function testItDetectsInvalidOriginator($originator)
+    public function testItThrowsAnExceptionWhenGivenAnOriginatorOfAnInvalidType($originator)
+    {
+        $this->setExpectedException('Surfnet\MessageBirdApiClient\Exception\InvalidArgumentException');
+
+        new MessagingService(new Client, $originator);
+    }
+
+    /**
+     * @dataProvider invalidOriginatorFormats
+     * @param mixed $originator
+     */
+    public function testItThrowsAnExceptionWhenGivenAnIncorrectlyFormattedOriginator($originator)
     {
         $this->setExpectedException('Surfnet\MessageBirdApiClient\Exception\DomainException');
 
@@ -203,15 +214,21 @@ class MessagingServiceTest extends \PHPUnit_Framework_TestCase
         }
     }
 
-    public function invalidOriginators()
+    public function invalidOriginatorTypes()
     {
         return [
-            'Too long' => ['ThisIsTooLon'],
+            'Integer instead of string' => [0],
+            'NULL instead of string'    => [null],
+            'object instead of string' => [new \stdClass],
+        ];
+    }
+
+    public function invalidOriginatorFormats()
+    {
+        return [
+            'Too long'          => ['ThisIsTooLon'],
             'InvalidCharacters' => ['its.invalid'],
-            'Too short' => [''],
-            'Not a string #1' => [0],
-            'Not a string #2' => [null],
-            'Not a string #3' => [new \stdClass],
+            'Too short'         => [''],
         ];
     }
 

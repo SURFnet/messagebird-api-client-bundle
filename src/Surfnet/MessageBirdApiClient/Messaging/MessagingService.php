@@ -74,7 +74,7 @@ class MessagingService
     public function send(Message $message)
     {
         try {
-            $response = $this->http->post('/messages',[
+            $response = $this->http->post('/messages', [
                 'json' => [
                     'originator' => $this->originator,
                     'recipients' => $message->getRecipient(),
@@ -100,7 +100,10 @@ class MessagingService
         }
 
         if (!isset($document['recipients']['totalDeliveryFailedCount'])) {
-            throw new ApiRuntimeException('The server returned an invalid response; delivery information is missing.', []);
+            throw new ApiRuntimeException(
+                'The server returned an invalid response; delivery information is missing.',
+                []
+            );
         }
 
         return $document['recipients']['totalDeliveryFailedCount'] === 0;
@@ -138,7 +141,10 @@ class MessagingService
         } elseif ($statusCode >= 500 && $statusCode < 600) {
             throw new ApiRuntimeException('A server error occurred.', $errors);
         } else {
-            throw new ApiRuntimeException(sprintf('The server responded with an unexpected HTTP status code (%s).', $statusCode), $errors);
+            throw new ApiRuntimeException(
+                sprintf('The server responded with an unexpected HTTP status code (%s).', $statusCode),
+                $errors
+            );
         }
     }
 }

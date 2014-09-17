@@ -37,6 +37,10 @@ class Message
      */
     private $body;
 
+    /**
+     * @param string $recipient
+     * @param string $body
+     */
     public function __construct($recipient, $body)
     {
         if (!is_string($recipient)) {

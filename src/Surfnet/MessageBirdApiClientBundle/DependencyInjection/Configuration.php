@@ -55,7 +55,9 @@ class Configuration implements ConfigurationInterface
                             ->ifTrue(function ($headerValue) {
                                 return strpos($headerValue, 'AccessKey ') !== 0;
                             })
-                                ->thenInvalid("Authorization value '%s' should be in the format 'AccessKey your_access_key_here'.")
+                                ->thenInvalid(
+                                    "Authorization value '%s' should be in the format 'AccessKey your_access_key_here'."
+                                )
                             ->end()
                         ->isRequired()
                     ->end()
@@ -65,8 +67,7 @@ class Configuration implements ConfigurationInterface
                             ->scalarNode('originator')->isRequired()->end()
                         ->end()
                     ->end()
-                ->end()
-        ;
+                ->end();
 
         return $treeBuilder;
     }

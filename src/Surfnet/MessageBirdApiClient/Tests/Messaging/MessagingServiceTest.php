@@ -94,7 +94,10 @@ class MessagingServiceTest extends \PHPUnit_Framework_TestCase
 
     public function testHandlesInvalidAccessKey()
     {
-        $this->setExpectedException('Surfnet\MessageBirdApiClient\Exception\InvalidAccessKeyException', 'invalid access key');
+        $this->setExpectedException(
+            'Surfnet\MessageBirdApiClient\Exception\InvalidAccessKeyException',
+            'invalid access key'
+        );
 
         $http = new Client;
         $http->getEmitter()->attach(new Mock([__DIR__ . '/fixtures/it-handles-invalid-access-key.txt']));
@@ -197,7 +200,10 @@ class MessagingServiceTest extends \PHPUnit_Framework_TestCase
 
     public function testThrowsApiRuntimeExceptionWhenDeliveryInfoMissing()
     {
-        $this->setExpectedException('Surfnet\MessageBirdApiClient\Exception\ApiRuntimeException', 'delivery information is missing');
+        $this->setExpectedException(
+            'Surfnet\MessageBirdApiClient\Exception\ApiRuntimeException',
+            'delivery information is missing'
+        );
 
         $http = new Client;
         $http->getEmitter()->attach(new Mock([__DIR__ . '/fixtures/it-throws-when-delivery-info-missing.txt']));
@@ -215,7 +221,10 @@ class MessagingServiceTest extends \PHPUnit_Framework_TestCase
 
     public function testThrowsApiRuntimeExceptionWhenUnknownStatusCode()
     {
-        $this->setExpectedException('Surfnet\MessageBirdApiClient\Exception\ApiRuntimeException', 'unexpected HTTP status code');
+        $this->setExpectedException(
+            'Surfnet\MessageBirdApiClient\Exception\ApiRuntimeException',
+            'unexpected HTTP status code'
+        );
 
         $http = new Client;
         $http->getEmitter()->attach(new Mock([__DIR__ . '/fixtures/101-switching-protocols.txt']));

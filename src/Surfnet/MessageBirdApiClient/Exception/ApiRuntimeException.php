@@ -30,7 +30,7 @@ class ApiRuntimeException extends RuntimeException implements ApiException
     /**
      * @param string $message
      * @param array $errors The original array of error messages as produced by MessageBird.
-     * @param Exception $previous
+     * @param Exception|null $previous
      * @param int $code
      */
     public function __construct($message, array $errors, Exception $previous = null, $code = 0)

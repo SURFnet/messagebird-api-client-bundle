@@ -20,13 +20,8 @@ namespace Surfnet\MessageBirdApiClient\Exception;
 
 use Exception;
 
-class ApiDomainException extends DomainException implements ApiException
+class ApiDomainException extends DomainException
 {
-    /**
-     * @var array
-     */
-    private $errors;
-
     /**
      * @param string $message
      * @param array $errors The original array of error messages as produced by MessageBird.
@@ -35,18 +30,19 @@ class ApiDomainException extends DomainException implements ApiException
      */
     public function __construct($message, array $errors, Exception $previous = null, $code = 0)
     {
-        parent::__construct($message, $code, $previous);
+        $message = sprintf('%s %s', $message, $this->createErrorString($errors));
 
-        $this->errors = $errors;
+        parent::__construct($message, $code, $previous);
     }
 
     /**
+     * @param array $errors
      * @return string E.g. (#9) no (correct) recipients found; (#10) originator is invalid
      */
-    public function getErrorString()
+    private function createErrorString(array $errors)
     {
         return join('; ', array_map(function ($error) {
             return sprintf('(#%d) %s', $error['code'], $error['description']);
-        }, $this->errors));
+        }, $errors));
     }
 }

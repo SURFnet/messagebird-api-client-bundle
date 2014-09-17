@@ -21,6 +21,8 @@ namespace Surfnet\MessageBirdApiClient\Messaging;
 use GuzzleHttp\ClientInterface;
 use GuzzleHttp\Exception\ClientException as GuzzleClientException;
 use GuzzleHttp\Exception\ServerException as GuzzleServerException;
+use GuzzleHttp\Exception\TooManyRedirectsException;
+use GuzzleHttp\Exception\TransferException;
 use Surfnet\MessageBirdApiClient\Exception\ApiDomainException;
 use Surfnet\MessageBirdApiClient\Exception\ApiRuntimeException;
 use Surfnet\MessageBirdApiClient\Exception\DomainException;
@@ -91,6 +93,11 @@ class MessagingService
             $response = $e->getResponse();
         } catch (GuzzleServerException $e) {
             $response = $e->getResponse();
+        } catch (TooManyRedirectsException $e) {
+            throw new ApiRuntimeException('The server performed too many redirects', [], $e);
+        } catch (TransferException $e) {
+            // Thrown during a networking error (connection timeout, DNS errors et cetera).
+            throw new ApiRuntimeException(sprintf('The server did not respond properly: %s', $e->getMessage()), [], $e);
         }
 
         try {

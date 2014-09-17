@@ -19,6 +19,8 @@
 namespace Surfnet\MessageBirdApiClient\Tests\Messaging;
 
 use GuzzleHttp\Client;
+use GuzzleHttp\Exception\RequestException;
+use GuzzleHttp\Exception\TooManyRedirectsException;
 use GuzzleHttp\Subscriber\Mock;
 use Surfnet\MessageBirdApiClient\Exception\ApiDomainException;
 use Surfnet\MessageBirdApiClient\Exception\ApiRuntimeException;
@@ -164,6 +166,45 @@ class MessagingServiceTest extends \PHPUnit_Framework_TestCase
 
         $http = new Client;
         $http->getEmitter()->attach(new Mock([__DIR__ . '/fixtures/101-switching-protocols.txt']));
+
+        $messaging = new MessagingService($http, 'SURFnet');
+        $messaging->send(new Message('31612345678', 'This is a text message.'));
+    }
+
+    public function testItThrowsApiRuntimeExceptionWhenConnectionFails()
+    {
+        $this->setExpectedException(
+            'Surfnet\MessageBirdApiClient\Exception\ApiRuntimeException',
+            'The server did not respond properly'
+        );
+
+        $http = $this->getMock('GuzzleHttp\ClientInterface');
+        $http->expects($this->any())
+            ->method('post')
+            ->willThrowException(
+                new RequestException('Connection timed out', $this->getMock('GuzzleHttp\Message\RequestInterface'))
+            );
+
+        $messaging = new MessagingService($http, 'SURFnet');
+        $messaging->send(new Message('31612345678', 'This is a text message.'));
+    }
+
+    public function testItThrowsApiRuntimeExceptionWhenServerRedirectsTooManyTimes()
+    {
+        $this->setExpectedException(
+            'Surfnet\MessageBirdApiClient\Exception\ApiRuntimeException',
+            'The server performed too many redirects'
+        );
+
+        $http = $this->getMock('GuzzleHttp\ClientInterface');
+        $http->expects($this->any())
+            ->method('post')
+            ->willThrowException(
+                new TooManyRedirectsException(
+                    'Too many redirects',
+                    $this->getMock('GuzzleHttp\Message\RequestInterface')
+                )
+            );
 
         $messaging = new MessagingService($http, 'SURFnet');
         $messaging->send(new Message('31612345678', 'This is a text message.'));

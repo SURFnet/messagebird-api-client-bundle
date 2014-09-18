@@ -34,7 +34,7 @@ class MessagingService
      *
      * @var ClientInterface
      */
-    private $http;
+    private $guzzleClient;
 
     /**
      * The sender's telephone number (see Message#recipient for documentation) or an alphanumeric
@@ -45,12 +45,12 @@ class MessagingService
     private $originator;
 
     /**
-     * @param ClientInterface $http
+     * @param ClientInterface $guzzleClient
      * @param string $originator See MessageService#originator.
      * @throws DomainException Thrown when the originator is incorrectly formatted.
      * @throws InvalidArgumentException
      */
-    public function __construct(ClientInterface $http, $originator)
+    public function __construct(ClientInterface $guzzleClient, $originator)
     {
         if (!is_string($originator)) {
             throw new InvalidArgumentException('Message originator is not a string.');
@@ -63,7 +63,7 @@ class MessagingService
             );
         }
 
-        $this->http = $http;
+        $this->guzzleClient = $guzzleClient;
         $this->originator = $originator;
     }
 
@@ -76,7 +76,7 @@ class MessagingService
      */
     public function send(Message $message)
     {
-        $response = $this->http->post('/messages', [
+        $response = $this->guzzleClient->post('/messages', [
             'json' => [
                 'originator' => $this->originator,
                 'recipients' => $message->getRecipient(),

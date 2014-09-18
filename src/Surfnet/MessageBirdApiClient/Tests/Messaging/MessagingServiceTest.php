@@ -67,36 +67,36 @@ class MessagingServiceTest extends \PHPUnit_Framework_TestCase
         $http->getEmitter()->attach(new Mock([__DIR__ . '/fixtures/it-sends-a-message.txt']));
 
         $messaging = new MessagingService($http, 'SURFnet');
-        $this->assertTrue($messaging->send(new Message('31612345678', 'This is a text message.')));
+        $result = $messaging->send(new Message('31612345678', 'This is a text message.'));
+
+        $this->assertTrue($result->isSuccess());
     }
 
     public function testHandlesUnprocessableEntities()
     {
-        $this->setExpectedException(
-            'Surfnet\MessageBirdApiClient\Exception\UnprocessableMessageException',
-            'message could not be processed'
-        );
-
         $http = new Client;
         $http->getEmitter()->attach(new Mock([__DIR__ . '/fixtures/it-handles-unprocessable-entities.txt']));
 
         $messaging = new MessagingService($http, 'SURFnet');
-        $messaging->send(new Message('31612345678', 'This is a text message.'));
+        $result = $messaging->send(new Message('31612345678', 'This is a text message.'));
+
+        $this->assertTrue($result->isMessageInvalid());
     }
 
     public function testHandlesInvalidAccessKey()
     {
-        $this->setExpectedException(
-            'Surfnet\MessageBirdApiClient\Exception\InvalidAccessKeyException',
-            '(#2) Request not allowed (incorrect access_key); (#9) no (correct) recipients found; '
-            . '(#10) originator is invalid'
-        );
-
         $http = new Client;
         $http->getEmitter()->attach(new Mock([__DIR__ . '/fixtures/it-handles-invalid-access-key.txt']));
 
         $messaging = new MessagingService($http, 'SURFnet');
-        $messaging->send(new Message('31612345678', 'This is a text message.'));
+        $result = $messaging->send(new Message('31612345678', 'This is a text message.'));
+
+        $this->assertTrue($result->isAccessKeyInvalid());
+        $this->assertEquals(
+            '(#2) Request not allowed (incorrect access_key); (#9) no (correct) recipients found; '
+                . '(#10) originator is invalid',
+            $result->getErrors()
+        );
     }
 
     /**
@@ -104,9 +104,9 @@ class MessagingServiceTest extends \PHPUnit_Framework_TestCase
      * @param string $fixture Filename to HTTP response fixture.
      * @param string $errorString
      */
-    public function testThrowsApiDomainExceptionsOnAllOther4xxStatusCodes($fixture, $errorString)
+    public function testThrowsApiDomainExceptionsOnOther4xxStatusCodes($fixture, $errorString)
     {
-        $this->setExpectedException('Surfnet\MessageBirdApiClient\Exception\ApiDomainException', $errorString);
+        $this->setExpectedException('Surfnet\MessageBirdApiClient\Exception\ApiRuntimeException', $errorString);
 
         $http = new Client;
 
@@ -117,19 +117,20 @@ class MessagingServiceTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @dataProvider statusCodes5xx
+     * @dataProvider other5xxStatusCodes
      * @param string $fixture Filename to HTTP response fixture.
      * @param string $errorString
      */
-    public function testThrowsApiRuntimeExceptionsOn5xxStatusCode($fixture, $errorString)
+    public function testHandlesOther5xxStatusCodes($fixture, $errorString)
     {
-        $this->setExpectedException('Surfnet\MessageBirdApiClient\Exception\ApiRuntimeException', $errorString);
-
         $http = new Client;
         $http->getEmitter()->attach(new Mock([$fixture]));
 
         $messaging = new MessagingService($http, 'SURFnet');
-        $messaging->send(new Message('31612345678', 'This is a text message.'));
+        $result = $messaging->send(new Message('31612345678', 'This is a text message.'));
+
+        $this->assertFalse($result->isSuccess());
+        $this->assertEquals($errorString, $result->getErrors());
     }
 
     public function testThrowsApiRuntimeExceptionsOnBrokenJson()
@@ -143,25 +144,11 @@ class MessagingServiceTest extends \PHPUnit_Framework_TestCase
         $messaging->send(new Message('31612345678', 'This is a text message.'));
     }
 
-    public function testThrowsApiRuntimeExceptionWhenDeliveryInfoMissing()
-    {
-        $this->setExpectedException(
-            'Surfnet\MessageBirdApiClient\Exception\ApiRuntimeException',
-            'delivery information is missing'
-        );
-
-        $http = new Client;
-        $http->getEmitter()->attach(new Mock([__DIR__ . '/fixtures/it-throws-when-delivery-info-missing.txt']));
-
-        $messaging = new MessagingService($http, 'SURFnet');
-        $messaging->send(new Message('31612345678', 'This is a text message.'));
-    }
-
     public function testThrowsApiRuntimeExceptionWhenUnknownStatusCode()
     {
         $this->setExpectedException(
             'Surfnet\MessageBirdApiClient\Exception\ApiRuntimeException',
-            'unexpected HTTP status code'
+            'Unexpected server behaviour'
         );
 
         $http = new Client;
@@ -201,15 +188,15 @@ class MessagingServiceTest extends \PHPUnit_Framework_TestCase
     public function other4xxStatusCodes()
     {
         return [
-            [__DIR__ . '/fixtures/other-4xx-404.txt', '(#20) message not found'],
-            [__DIR__ . '/fixtures/other-4xx-405.txt', ''],
+            [__DIR__ . '/fixtures/other-4xx-406.txt', '(#20) message not found'],
+            [__DIR__ . '/fixtures/other-4xx-415.txt', ''],
         ];
     }
 
-    public function statusCodes5xx()
+    public function other5xxStatusCodes()
     {
         return [
-            [__DIR__ . '/fixtures/500-server-error.txt', '(#9) no (correct) recipients found'],
+            [__DIR__ . '/fixtures/502-bad-gateway.txt', '(#9) no (correct) recipients found'],
             [__DIR__ . '/fixtures/503-service-unavailable.txt', ''],
         ];
     }

@@ -1,4 +1,4 @@
-HTTP/1.1 405 Method Not Allowed
+HTTP/1.1 415 Unsupported Media Type
 Access-Control-Allow-Credentials: true
 Access-Control-Allow-Headers: Authorization
 Access-Control-Allow-Methods: GET, POST, PUT, DELETE

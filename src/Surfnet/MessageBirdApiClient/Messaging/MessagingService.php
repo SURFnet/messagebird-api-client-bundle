@@ -75,12 +75,9 @@ class MessagingService
 
     /**
      * @param Message $message
-     * @return boolean Whether the message was successfully delivered, sent or buffered. When FALSE,
-     *                 delivery failed.
+     * @return SendMessageResult
      *
-     * @throws UnprocessableMessageException
-     * @throws InvalidAccessKeyException
-     * @throws ApiDomainException
+     * @throws ApiRuntimeException
      * @throws TransferException Thrown by Guzzle during communication failure or unexpected server behaviour.
      */
     public function send(Message $message)
@@ -100,58 +97,24 @@ class MessagingService
             throw new ApiRuntimeException('The server did not return valid JSON.', [], $e);
         }
 
-        $statusCode = (int) $response->getStatusCode();
-
-        if ($statusCode < 200 || $statusCode >= 300) {
-            $this->handleHttpErrors($document, $statusCode);
-        }
-
-        if (!isset($document['recipients']['totalDeliveryFailedCount'])) {
-            throw new ApiRuntimeException(
-                'The server returned an invalid response; delivery information is missing.',
-                []
-            );
-        }
-
-        return $document['recipients']['totalDeliveryFailedCount'] === 0;
-    }
-
-    /**
-     * Throws meaningful exceptions when possible (4xx-5xx status codes), ApiRuntimeExceptions when it cannot.
-     *
-     * @param mixed $document
-     * @param int $statusCode
-     * @throws InvalidAccessKeyException Thrown when the server doesn't accept the configured API access key.
-     * @throws UnprocessableMessageException Thrown when the server doesn't accept the format of the sent message.
-     * @throws ApiDomainException
-     */
-    private function handleHttpErrors($document, $statusCode)
-    {
-        if (isset($document['errors']) && is_array($document['errors'])) {
+        if (isset($document['errors'])) {
             $errors = $document['errors'];
         } else {
             $errors = [];
         }
 
-        if ($statusCode === 401) {
-            throw new InvalidAccessKeyException(
-                'An invalid access key was used to access the MessageBird API.',
-                $errors
-            );
-        } elseif ($statusCode === 422) {
-            throw new UnprocessableMessageException(
-                'The message could not be processed by MessageBird.',
-                $errors
-            );
-        } elseif ($statusCode >= 400 && $statusCode < 500) {
-            throw new ApiDomainException(sprintf('A client error occurred (%d).', $statusCode), $errors);
-        } elseif ($statusCode >= 500 && $statusCode < 600) {
-            throw new ApiRuntimeException('A server error occurred.', $errors);
-        } else {
-            throw new ApiRuntimeException(
-                sprintf('The server responded with an unexpected HTTP status code (%s).', $statusCode),
-                $errors
-            );
+        $statusCode = (int) $response->getStatusCode();
+
+        if (!in_array($statusCode, [200, 201, 204, 401, 404, 405, 422]) && !($statusCode >= 500 && $statusCode < 600)) {
+            throw new ApiRuntimeException(sprintf('Unexpected server behaviour (HTTP %d)', $statusCode), $errors);
         }
+
+        if (!isset($document['recipients']['items'][0]['status'])) {
+            $deliveryStatus = SendMessageResult::STATUS_NOT_SENT;
+        } else {
+            $deliveryStatus = $document['recipients']['items'][0]['status'];
+        }
+
+        return new SendMessageResult($deliveryStatus, $errors);
     }
 }

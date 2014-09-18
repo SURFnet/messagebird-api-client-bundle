@@ -1,4 +1,4 @@
-HTTP/1.1 404 Not Found
+HTTP/1.1 502 Bad Gateway
 Access-Control-Allow-Credentials: true
 Access-Control-Allow-Headers: Authorization
 Access-Control-Allow-Methods: GET, POST, PUT, DELETE
@@ -18,9 +18,9 @@ X-UA-Compatible: IE=edge,chrome=1
 {
     "errors": [
         {
-            "code": 20, 
-            "description": "message not found", 
-            "parameter": null
+            "code": 9,
+            "description": "no (correct) recipients found",
+            "parameter": "recipient"
         }
     ]
 }

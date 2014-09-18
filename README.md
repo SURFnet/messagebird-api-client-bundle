@@ -5,9 +5,9 @@ A Symfony2 bundle to integrate MessageBird's messaging service.
 
 ## Installation
 
- * Add the package to your Composer file (adjust version if needed)
+ * Add the package to your Composer file
     ```sh
-    composer require surfnet/messagebird-api-client-bundle:dev-develop
+    composer require surfnet/messagebird-api-client-bundle:~1.0
     ```
 
  * Add the bundle to your kernel in `app/AppKernel.php`

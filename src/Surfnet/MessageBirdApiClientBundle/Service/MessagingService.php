@@ -26,6 +26,7 @@ use Surfnet\MessageBirdApiClient\Exception\InvalidAccessKeyException;
 use Surfnet\MessageBirdApiClient\Exception\UnprocessableMessageException;
 use Surfnet\MessageBirdApiClient\Messaging\Message;
 use Surfnet\MessageBirdApiClient\Messaging\MessagingService as LibraryMessagingService;
+use Surfnet\MessageBirdApiClient\Messaging\SendMessageResult;
 
 class MessagingService
 {
@@ -45,33 +46,38 @@ class MessagingService
         $this->logger = $logger;
     }
 
+    /**
+     * @param Message $message
+     * @return SendMessageResult
+     */
     public function send(Message $message)
     {
         try {
-            return $this->messagingService->send($message);
-        } catch (UnprocessableMessageException $e) {
-            $this->logger->notice(
-                'MessageBird: ' . $e->getMessage(),
-                $this->createMessageLogContext($message)
-            );
-        } catch (InvalidAccessKeyException $e) {
-            $this->logger->critical(
-                'MessageBird: ' . $e->getMessage(),
-                $this->createMessageLogContext($message)
-            );
-        } catch (ApiDomainException $e) {
-            $this->logger->warning(
-                'MessageBird: ' . $e->getMessage(),
-                $this->createMessageLogContext($message)
-            );
+            $result = $this->messagingService->send($message);
         } catch (ApiRuntimeException $e) {
             $this->logger->error(
-                'MessageBird: ' . $e->getMessage(),
+                sprintf('Unexpected communication failure with MessageBird; %s', $e->getMessage()),
+                $this->createMessageLogContext($message)
+            );
+
+            throw $e;
+        }
+
+        if ($result->isMessageInvalid()) {
+            $this->logger->notice(
+                sprintf('Invalid message sent to MessageBird (%s)', $result->getErrors()),
                 $this->createMessageLogContext($message)
             );
         }
 
-        return false;
+        if ($result->isAccessKeyInvalid()) {
+            $this->logger->critical(
+                sprintf('Invalid access key used for MessageBird (%s)', $result->getErrors()),
+                $this->createMessageLogContext($message)
+            );
+        }
+
+        return $result;
     }
 
     /**

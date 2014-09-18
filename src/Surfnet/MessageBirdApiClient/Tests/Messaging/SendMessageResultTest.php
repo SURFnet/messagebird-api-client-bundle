@@ -46,16 +46,6 @@ class SendMessageResultTest extends \PHPUnit_Framework_TestCase
         ];
     }
 
-    public function testItOnlyAcceptsCertainDeliveryStatuses()
-    {
-        $this->setExpectedException(
-            'Surfnet\MessageBirdApiClient\Exception\DomainException',
-            'Invalid delivery status'
-        );
-
-        new SendMessageResult('surfnet', []);
-    }
-
     /**
      * @dataProvider itDeterminesSuccessSuccessfullyDataPoints
      * @param boolean $successExpected

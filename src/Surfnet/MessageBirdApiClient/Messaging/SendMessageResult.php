@@ -37,6 +37,7 @@ class SendMessageResult
     const STATUS_DELIVERED = 'delivered';
     const STATUS_DELIVERY_FAILED = 'delivery_failed';
     const STATUS_NOT_SENT = 'not_sent';
+    const STATUS_UNKNOWN = 'unknown';
 
     /**
      * @var string
@@ -51,7 +52,6 @@ class SendMessageResult
     /**
      * @param string $deliveryStatus
      * @param array[] $errors
-     * @throws DomainException Thrown when the delivery status isn't valid.
      * @throws InvalidArgumentException
      */
     public function __construct($deliveryStatus, array $errors)
@@ -60,8 +60,8 @@ class SendMessageResult
             throw new InvalidArgumentException('Delivery status must be string.');
         }
 
-        if (!$this->isValidDeliveryStatus($deliveryStatus)) {
-            throw new DomainException(sprintf('Invalid delivery status "%s"', $deliveryStatus));
+        if (!$this->isKnownDeliveryStatus($deliveryStatus)) {
+            $deliveryStatus = self::STATUS_UNKNOWN;
         }
 
         $this->deliveryStatus = $deliveryStatus;
@@ -125,7 +125,7 @@ class SendMessageResult
      * @param mixed $deliveryStatus
      * @return bool
      */
-    private function isValidDeliveryStatus($deliveryStatus)
+    private function isKnownDeliveryStatus($deliveryStatus)
     {
         return in_array(
             $deliveryStatus,

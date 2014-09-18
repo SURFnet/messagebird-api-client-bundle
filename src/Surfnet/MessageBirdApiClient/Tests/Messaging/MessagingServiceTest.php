@@ -145,7 +145,7 @@ class MessagingServiceTest extends \PHPUnit_Framework_TestCase
     {
         $this->setExpectedException(
             'Surfnet\MessageBirdApiClient\Exception\ApiRuntimeException',
-            'Unexpected server behaviour'
+            'Unexpected MessageBird server behaviour'
         );
 
         $http = new Client;

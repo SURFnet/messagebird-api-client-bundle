@@ -1,0 +1,62 @@
+POST /messages HTTP/1.1
+Accept: application/json
+Accept-Encoding: gzip, deflate, compress
+Authorization:  AccessKey access_key_here
+Content-Length: 90
+Content-Type: application/json; charset=utf-8
+Host: rest.messagebird.com
+User-Agent: HTTPie/0.8.0
+
+{
+    "body": "HTTP status code test", 
+    "originator": "ibuildings", 
+    "recipients": "316censored"
+}
+
+HTTP/1.1 201 Created
+Access-Control-Allow-Credentials: true
+Access-Control-Allow-Headers: Authorization
+Access-Control-Allow-Methods: GET, POST, PUT, DELETE
+Access-Control-Allow-Origin: http://support.messagebird.com
+Cache-Control: no-cache, must-revalidate
+Connection: close
+Content-Length: 704
+Content-Type: application/json
+Date: Mon, 15 Sep 2014 12:25:26 GMT
+Expires: 0
+Pragma: no-cache
+Server: Apache
+Vary: Authorization
+X-Powered-By: PHP/5.5.12-1~dotdeb.1
+X-UA-Compatible: IE=edge,chrome=1
+
+{
+    "body": "HTTP status code test", 
+    "createdDatetime": "2014-09-15T12:25:26+00:00", 
+    "datacoding": "plain", 
+    "direction": "mt", 
+    "gateway": 1, 
+    "href": "https://rest.messagebird.com/messages/c3cddce045416dab6378c58b96540915", 
+    "id": "c3cddce045416dab6378c58b96540915", 
+    "mclass": 1, 
+    "originator": "ibuildings", 
+    "recipients": {
+        "items": [
+            {
+                "recipient": 316censored, 
+                "status": "sent", 
+                "statusDatetime": "2014-09-15T12:25:26+00:00"
+            }
+        ], 
+        "totalCount": 1, 
+        "totalDeliveredCount": 0, 
+        "totalDeliveryFailedCount": 0, 
+        "totalSentCount": 1
+    }, 
+    "reference": null, 
+    "scheduledDatetime": null, 
+    "type": "sms", 
+    "typeDetails": {}, 
+    "validity": null
+}
+

@@ -19,6 +19,13 @@
     <filter>
         <whitelist processUncoveredFilesFromWhitelist="true">
             <directory>src</directory>
+            <exclude>
+                <directory>src/Surfnet/MessageBirdApiClient/Tests</directory>
+                <directory>src/Surfnet/MessageBirdApiClientBundle/Tests</directory>
+            </exclude>
         </whitelist>
     </filter>
+    <listeners>
+        <listener class="\Mockery\Adapter\Phpunit\TestListener"></listener>
+    </listeners>
 </phpunit>

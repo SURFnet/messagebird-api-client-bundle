@@ -4,8 +4,126 @@
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "e22e80e1141820be779a30768f55e8d7",
+    "hash": "e8cba99e2de4b7d61e518567f8be374a",
     "packages": [
+        {
+            "name": "guzzlehttp/guzzle",
+            "version": "4.2.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/guzzle/guzzle.git",
+                "reference": "9c4fbbf6457768f5036fbd88f1229f3fca812a5d"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/guzzle/guzzle/zipball/9c4fbbf6457768f5036fbd88f1229f3fca812a5d",
+                "reference": "9c4fbbf6457768f5036fbd88f1229f3fca812a5d",
+                "shasum": ""
+            },
+            "require": {
+                "ext-json": "*",
+                "guzzlehttp/streams": "~2.1",
+                "php": ">=5.4.0"
+            },
+            "require-dev": {
+                "ext-curl": "*",
+                "phpunit/phpunit": "~4.0",
+                "psr/log": "~1.0"
+            },
+            "suggest": {
+                "ext-curl": "Guzzle will use specific adapters if cURL is present"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "4.2-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "GuzzleHttp\\": "src/"
+                },
+                "files": [
+                    "src/functions.php"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Michael Dowling",
+                    "email": "mtdowling@gmail.com",
+                    "homepage": "https://github.com/mtdowling"
+                }
+            ],
+            "description": "Guzzle is a PHP HTTP client library and framework for building RESTful web service clients",
+            "homepage": "http://guzzlephp.org/",
+            "keywords": [
+                "client",
+                "curl",
+                "framework",
+                "http",
+                "http client",
+                "rest",
+                "web service"
+            ],
+            "time": "2014-09-08 22:11:58"
+        },
+        {
+            "name": "guzzlehttp/streams",
+            "version": "2.1.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/guzzle/streams.git",
+                "reference": "f91b721d73f0e561410903b3b3c90a5d0e40b534"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/guzzle/streams/zipball/f91b721d73f0e561410903b3b3c90a5d0e40b534",
+                "reference": "f91b721d73f0e561410903b3b3c90a5d0e40b534",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.4.0"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "~4.0"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "2.0-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "GuzzleHttp\\Stream\\": "src/"
+                },
+                "files": [
+                    "src/functions.php"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Michael Dowling",
+                    "email": "mtdowling@gmail.com",
+                    "homepage": "https://github.com/mtdowling"
+                }
+            ],
+            "description": "Provides a simple abstraction over streams of data (Guzzle 4+)",
+            "homepage": "http://guzzlephp.org/",
+            "keywords": [
+                "Guzzle",
+                "stream"
+            ],
+            "time": "2014-08-17 21:15:53"
+        },
         {
             "name": "psr/log",
             "version": "1.0.0",
@@ -1233,6 +1351,166 @@
                 "webtest"
             ],
             "time": "2013-10-04 15:03:51"
+        },
+        {
+            "name": "matthiasnoback/symfony-config-test",
+            "version": "v0.3.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/matthiasnoback/SymfonyConfigTest.git",
+                "reference": "d9ccdb619b600c6170374bb37e999dd9848e5a07"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/matthiasnoback/SymfonyConfigTest/zipball/d9ccdb619b600c6170374bb37e999dd9848e5a07",
+                "reference": "d9ccdb619b600c6170374bb37e999dd9848e5a07",
+                "shasum": ""
+            },
+            "require": {
+                "symfony/config": "2.*"
+            },
+            "require-dev": {
+                "phpunit/phpunit": ">=3.7",
+                "sebastian/exporter": "1.*"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Matthias\\SymfonyConfigTest\\": ""
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Matthias Noback",
+                    "email": "matthiasnoback@gmail.com",
+                    "homepage": "http://php-and-symfony.matthiasnoback.nl"
+                }
+            ],
+            "description": "Library for testing user classes related to the Symfony Config Component",
+            "homepage": "https://github.com/matthiasnoback/SymfonyConfigTest",
+            "keywords": [
+                "config",
+                "phpunit",
+                "symfony"
+            ],
+            "time": "2014-09-10 14:14:18"
+        },
+        {
+            "name": "matthiasnoback/symfony-dependency-injection-test",
+            "version": "v0.7.1",
+            "target-dir": "Matthias/SymfonyDependencyInjectionTest",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/matthiasnoback/SymfonyDependencyInjectionTest.git",
+                "reference": "807c4374a7d65e7fd07f1383d3260c9178cb41d4"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/matthiasnoback/SymfonyDependencyInjectionTest/zipball/807c4374a7d65e7fd07f1383d3260c9178cb41d4",
+                "reference": "807c4374a7d65e7fd07f1383d3260c9178cb41d4",
+                "shasum": ""
+            },
+            "require": {
+                "matthiasnoback/symfony-config-test": "0.*",
+                "phpunit/phpunit": ">=3",
+                "sebastian/exporter": "~1",
+                "symfony/dependency-injection": "2.*"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-0": {
+                    "Matthias\\SymfonyDependencyInjectionTest\\": ""
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Matthias Noback",
+                    "email": "matthiasnoback@gmail.com",
+                    "homepage": "http://php-and-symfony.matthiasnoback.nl"
+                }
+            ],
+            "description": "Library for testing user classes related to the Symfony Dependency Injection Component",
+            "homepage": "http://github.com/matthiasnoback/SymfonyDependencyInjectionTest",
+            "keywords": [
+                "Symfony2",
+                "dependency injection",
+                "phpunit"
+            ],
+            "time": "2014-07-07 07:35:26"
+        },
+        {
+            "name": "mockery/mockery",
+            "version": "0.9.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/padraic/mockery.git",
+                "reference": "95a4855380dc70176c51807c678fb3bd6198529a"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/padraic/mockery/zipball/95a4855380dc70176c51807c678fb3bd6198529a",
+                "reference": "95a4855380dc70176c51807c678fb3bd6198529a",
+                "shasum": ""
+            },
+            "require": {
+                "lib-pcre": ">=7.0",
+                "php": ">=5.3.2"
+            },
+            "require-dev": {
+                "hamcrest/hamcrest-php": "~1.1",
+                "phpunit/phpunit": "~4.0",
+                "satooshi/php-coveralls": "~0.7@dev"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "0.9.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-0": {
+                    "Mockery": "library/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD-3-Clause"
+            ],
+            "authors": [
+                {
+                    "name": "Pádraic Brady",
+                    "email": "padraic.brady@gmail.com",
+                    "homepage": "http://blog.astrumfutura.com"
+                },
+                {
+                    "name": "Dave Marshall",
+                    "email": "dave.marshall@atstsolutions.co.uk",
+                    "homepage": "http://davedevelopment.co.uk"
+                }
+            ],
+            "description": "Mockery is a simple yet flexible PHP mock object framework for use in unit testing with PHPUnit, PHPSpec or any other testing framework. Its core goal is to offer a test double framework with a succint API capable of clearly defining all possible object operations and interactions using a human readable Domain Specific Language (DSL). Designed as a drop in alternative to PHPUnit's phpunit-mock-objects library, Mockery is easy to integrate with PHPUnit and can operate alongside phpunit-mock-objects without the World ending.",
+            "homepage": "http://github.com/padraic/mockery",
+            "keywords": [
+                "BDD",
+                "TDD",
+                "library",
+                "mock",
+                "mock objects",
+                "mockery",
+                "stub",
+                "test",
+                "test double",
+                "testing"
+            ],
+            "time": "2014-09-03 10:11:10"
         },
         {
             "name": "ocramius/instantiator",
@@ -2798,9 +3076,9 @@
 
     ],
     "prefer-stable": false,
-    "platform": [
-
-    ],
+    "platform": {
+        "php": "~5.4"
+    },
     "platform-dev": [
 
     ]

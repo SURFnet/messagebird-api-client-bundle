@@ -41,8 +41,9 @@ public function fooAction()
     
     /** @var \Surfnet\MessageBirdApiClientBundle\Service\MessagingService $messaging */
     $messaging = $this->get('surfnet_message_bird_api_client.messaging');
+    $result = $messaging->send($message);
     
-    if ($messaging->send($message)) {
+    if ($result->isSuccess()) {
         // Message has been buffered, sent or delivered.
     }
 }

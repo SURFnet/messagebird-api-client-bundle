@@ -81,27 +81,18 @@ class MessagingService
      * @throws UnprocessableMessageException
      * @throws InvalidAccessKeyException
      * @throws ApiDomainException
+     * @throws TransferException Thrown by Guzzle during communication failure or unexpected server behaviour.
      */
     public function send(Message $message)
     {
-        try {
-            $response = $this->http->post('/messages', [
-                'json' => [
-                    'originator' => $this->originator,
-                    'recipients' => $message->getRecipient(),
-                    'body'       => $message->getBody(),
-                ]
-            ]);
-        } catch (GuzzleClientException $e) {
-            $response = $e->getResponse();
-        } catch (GuzzleServerException $e) {
-            $response = $e->getResponse();
-        } catch (TooManyRedirectsException $e) {
-            throw new ApiRuntimeException('The server performed too many redirects', [], $e);
-        } catch (TransferException $e) {
-            // Thrown during a networking error (connection timeout, DNS errors et cetera).
-            throw new ApiRuntimeException(sprintf('The server did not respond properly: %s', $e->getMessage()), [], $e);
-        }
+        $response = $this->http->post('/messages', [
+            'json' => [
+                'originator' => $this->originator,
+                'recipients' => $message->getRecipient(),
+                'body'       => $message->getBody(),
+            ],
+            'exceptions' => false,
+        ]);
 
         try {
             $document = $response->json();

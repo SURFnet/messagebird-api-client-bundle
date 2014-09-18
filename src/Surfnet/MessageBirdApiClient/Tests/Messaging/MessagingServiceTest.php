@@ -171,45 +171,6 @@ class MessagingServiceTest extends \PHPUnit_Framework_TestCase
         $messaging->send(new Message('31612345678', 'This is a text message.'));
     }
 
-    public function testItThrowsApiRuntimeExceptionWhenConnectionFails()
-    {
-        $this->setExpectedException(
-            'Surfnet\MessageBirdApiClient\Exception\ApiRuntimeException',
-            'The server did not respond properly'
-        );
-
-        $http = $this->getMock('GuzzleHttp\ClientInterface');
-        $http->expects($this->any())
-            ->method('post')
-            ->willThrowException(
-                new RequestException('Connection timed out', $this->getMock('GuzzleHttp\Message\RequestInterface'))
-            );
-
-        $messaging = new MessagingService($http, 'SURFnet');
-        $messaging->send(new Message('31612345678', 'This is a text message.'));
-    }
-
-    public function testItThrowsApiRuntimeExceptionWhenServerRedirectsTooManyTimes()
-    {
-        $this->setExpectedException(
-            'Surfnet\MessageBirdApiClient\Exception\ApiRuntimeException',
-            'The server performed too many redirects'
-        );
-
-        $http = $this->getMock('GuzzleHttp\ClientInterface');
-        $http->expects($this->any())
-            ->method('post')
-            ->willThrowException(
-                new TooManyRedirectsException(
-                    'Too many redirects',
-                    $this->getMock('GuzzleHttp\Message\RequestInterface')
-                )
-            );
-
-        $messaging = new MessagingService($http, 'SURFnet');
-        $messaging->send(new Message('31612345678', 'This is a text message.'));
-    }
-
     public function invalidOriginatorTypes()
     {
         return [

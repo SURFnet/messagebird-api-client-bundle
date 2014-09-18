@@ -108,7 +108,7 @@ class SendMessageResult
     /**
      * @return string E.g. '(#9) no (correct) recipients found; (#10) originator is invalid'
      */
-    public function getErrorString()
+    public function getErrorsAsString()
     {
         return join('; ', array_map(function ($error) {
             return sprintf('(#%d) %s', $error['code'], $error['description']);

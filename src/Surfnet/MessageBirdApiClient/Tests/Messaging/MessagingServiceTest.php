@@ -92,7 +92,7 @@ class MessagingServiceTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(
             '(#2) Request not allowed (incorrect access_key); (#9) no (correct) recipients found; '
                 . '(#10) originator is invalid',
-            $result->getErrors()
+            $result->getErrorString()
         );
     }
 
@@ -127,7 +127,7 @@ class MessagingServiceTest extends \PHPUnit_Framework_TestCase
         $result = $messaging->send(new Message('31612345678', 'This is a text message.'));
 
         $this->assertFalse($result->isSuccess());
-        $this->assertEquals($errorString, $result->getErrors());
+        $this->assertEquals($errorString, $result->getErrorString());
     }
 
     public function testThrowsApiRuntimeExceptionsOnBrokenJson()

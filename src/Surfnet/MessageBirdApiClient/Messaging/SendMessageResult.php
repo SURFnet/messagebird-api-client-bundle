@@ -97,9 +97,18 @@ class SendMessageResult
     }
 
     /**
+     * @return array[] Returns the errors returned by the API as an array of arrays with
+     *                 keys int code, string message, string parameter.
+     */
+    public function getRawErrors()
+    {
+        return $this->errors;
+    }
+
+    /**
      * @return string E.g. '(#9) no (correct) recipients found; (#10) originator is invalid'
      */
-    public function getErrors()
+    public function getErrorString()
     {
         return join('; ', array_map(function ($error) {
             return sprintf('(#%d) %s', $error['code'], $error['description']);

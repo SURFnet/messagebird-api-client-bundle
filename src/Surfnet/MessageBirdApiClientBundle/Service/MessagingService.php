@@ -65,14 +65,14 @@ class MessagingService
 
         if ($result->isMessageInvalid()) {
             $this->logger->notice(
-                sprintf('Invalid message sent to MessageBird (%s)', $result->getErrors()),
+                sprintf('Invalid message sent to MessageBird (%s)', $result->getErrorString()),
                 $this->createMessageLogContext($message)
             );
         }
 
         if ($result->isAccessKeyInvalid()) {
             $this->logger->critical(
-                sprintf('Invalid access key used for MessageBird (%s)', $result->getErrors()),
+                sprintf('Invalid access key used for MessageBird (%s)', $result->getErrorString()),
                 $this->createMessageLogContext($message)
             );
         }

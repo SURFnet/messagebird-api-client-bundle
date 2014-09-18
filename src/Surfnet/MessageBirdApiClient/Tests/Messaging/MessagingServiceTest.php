@@ -19,11 +19,8 @@
 namespace Surfnet\MessageBirdApiClient\Tests\Messaging;
 
 use GuzzleHttp\Client;
-use GuzzleHttp\Exception\RequestException;
-use GuzzleHttp\Exception\TooManyRedirectsException;
 use GuzzleHttp\Subscriber\Mock;
 use Surfnet\MessageBirdApiClient\Exception\ApiDomainException;
-use Surfnet\MessageBirdApiClient\Exception\ApiRuntimeException;
 use Surfnet\MessageBirdApiClient\Exception\InvalidAccessKeyException;
 use Surfnet\MessageBirdApiClient\Messaging\Message;
 use Surfnet\MessageBirdApiClient\Messaging\MessagingService;

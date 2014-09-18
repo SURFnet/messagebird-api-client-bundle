@@ -19,9 +19,6 @@
 namespace Surfnet\MessageBirdApiClient\Messaging;
 
 use GuzzleHttp\ClientInterface;
-use GuzzleHttp\Exception\ClientException as GuzzleClientException;
-use GuzzleHttp\Exception\ServerException as GuzzleServerException;
-use GuzzleHttp\Exception\TooManyRedirectsException;
 use GuzzleHttp\Exception\TransferException;
 use Surfnet\MessageBirdApiClient\Exception\ApiDomainException;
 use Surfnet\MessageBirdApiClient\Exception\ApiRuntimeException;

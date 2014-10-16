@@ -37,34 +37,11 @@ class MessagingService
     private $guzzleClient;
 
     /**
-     * The sender's telephone number (see Message#recipient for documentation) or an alphanumeric
-     * string of a maximum of 11 characters.
-     *
-     * @var string
-     */
-    private $originator;
-
-    /**
      * @param ClientInterface $guzzleClient
-     * @param string $originator See MessageService#originator.
-     * @throws DomainException Thrown when the originator is incorrectly formatted.
-     * @throws InvalidArgumentException
      */
-    public function __construct(ClientInterface $guzzleClient, $originator)
+    public function __construct(ClientInterface $guzzleClient)
     {
-        if (!is_string($originator)) {
-            throw new InvalidArgumentException('Message originator is not a string.');
-        }
-
-        if (!preg_match('~^(\d+|[a-z0-9]{1,11})$~i', $originator)) {
-            throw new DomainException(
-                'Message originator is not a valid:'
-                . ' must be a string of digits or a string consisting of 1-11 alphanumerical characters.'
-            );
-        }
-
         $this->guzzleClient = $guzzleClient;
-        $this->originator = $originator;
     }
 
     /**
@@ -78,7 +55,7 @@ class MessagingService
     {
         $response = $this->guzzleClient->post('/messages', [
             'json' => [
-                'originator' => $this->originator,
+                'originator' => $message->getOriginator(),
                 'recipients' => $message->getRecipient(),
                 'body'       => $message->getBody(),
             ],

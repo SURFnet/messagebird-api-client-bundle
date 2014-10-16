@@ -23,6 +23,37 @@ use Surfnet\MessageBirdApiClient\Messaging\Message;
 class MessageTest extends \PHPUnit_Framework_TestCase
 {
     /**
+     * @dataProvider invalidOriginatorTypes
+     * @param mixed $originator
+     */
+    public function testItThrowsAnExceptionWhenGivenAnOriginatorOfAnInvalidType($originator)
+    {
+        $this->setExpectedException('Surfnet\MessageBirdApiClient\Exception\InvalidArgumentException');
+
+        new Message($originator, '31612345678', 'body');
+    }
+
+    /**
+     * @dataProvider invalidOriginatorFormats
+     * @param mixed $originator
+     */
+    public function testItThrowsAnExceptionWhenGivenAnIncorrectlyFormattedOriginator($originator)
+    {
+        $this->setExpectedException('Surfnet\MessageBirdApiClient\Exception\DomainException');
+
+        new Message($originator, '31612345678', 'body');
+    }
+
+    /**
+     * @dataProvider validOriginators
+     * @param mixed $originator
+     */
+    public function testItAcceptsValidOriginator($originator)
+    {
+        new Message($originator, '31612345678', 'body');
+    }
+
+    /**
      * @dataProvider invalidRecipientTypes
      * @param mixed $recipient
      */
@@ -30,7 +61,7 @@ class MessageTest extends \PHPUnit_Framework_TestCase
     {
         $this->setExpectedException('Surfnet\MessageBirdApiClient\Exception\InvalidArgumentException');
 
-        new Message($recipient, 'body');
+        new Message('SURFnet', $recipient, 'body');
     }
 
     /**
@@ -41,7 +72,7 @@ class MessageTest extends \PHPUnit_Framework_TestCase
     {
         $this->setExpectedException('Surfnet\MessageBirdApiClient\Exception\DomainException');
 
-        new Message($recipient, 'body');
+        new Message('SURFnet', $recipient, 'body');
     }
 
     /**
@@ -52,18 +83,18 @@ class MessageTest extends \PHPUnit_Framework_TestCase
     {
         $this->setExpectedException('Surfnet\MessageBirdApiClient\Exception\InvalidArgumentException');
 
-        new Message('31612345678', $body);
+        new Message('SURFnet', '31612345678', $body);
     }
 
     public function testItHasARecipient()
     {
-        $message = new Message('31612345678', 'body');
+        $message = new Message('SURFnet', '31612345678', 'body');
         $this->assertEquals('31612345678', $message->getRecipient());
     }
 
     public function testItHasABody()
     {
-        $message = new Message('31612345678', 'body');
+        $message = new Message('SURFnet', '31612345678', 'body');
         $this->assertEquals('body', $message->getBody());
     }
 
@@ -89,6 +120,33 @@ class MessageTest extends \PHPUnit_Framework_TestCase
             'Not a string, but NULL' => [null],
             'Not a string, but an object' => [new \stdClass],
             'Not a string, but an integer' => [3],
+        ];
+    }
+
+    public function invalidOriginatorTypes()
+    {
+        return [
+            'Integer instead of string' => [0],
+            'NULL instead of string'    => [null],
+            'object instead of string'  => [new \stdClass],
+        ];
+    }
+
+    public function invalidOriginatorFormats()
+    {
+        return [
+            'Too long'          => ['ThisIsTooLon'],
+            'InvalidCharacters' => ['its.invalid'],
+            'Too short'         => [''],
+        ];
+    }
+
+    public function validOriginators()
+    {
+        return [
+            'Length is max 11' => ['LengthIsOkk'],
+            'Numbers can have any length' => ['3429038382929284'],
+            'Minimum length is 1' => ['a'],
         ];
     }
 }

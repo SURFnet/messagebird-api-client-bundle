@@ -24,7 +24,6 @@ services:
         class: Surfnet\MessageBirdApiClient\Messaging\MessagingService
         arguments:
             - @surfnet_message_bird_api_client.library.guzzle
-            - %surfnet_message_bird_api_client.messaging.originator%
 
     surfnet_message_bird_api_client.library.guzzle:
         public: false

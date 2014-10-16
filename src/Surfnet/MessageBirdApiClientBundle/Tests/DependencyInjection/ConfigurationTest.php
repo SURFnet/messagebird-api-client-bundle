@@ -35,7 +35,6 @@ class ConfigurationTest extends AbstractConfigurationTestCase
                 'surfnet_message_bird_api_client' => [
                     'base_url' => 'file:///',
                     'authorization' => 'AccessKey dummy',
-                    'messaging' => ['originator' => 'SURFnet']
                 ]
             ],
             'scheme and host are required'
@@ -46,7 +45,6 @@ class ConfigurationTest extends AbstractConfigurationTestCase
                 'surfnet_message_bird_api_client' => [
                     'base_url' => 'messagebird.com',
                     'authorization' => 'AccessKey dummy',
-                    'messaging' => ['originator' => 'SURFnet']
                 ]
             ],
             'scheme and host are required'
@@ -56,7 +54,7 @@ class ConfigurationTest extends AbstractConfigurationTestCase
     public function testAuthorizationIsRequired()
     {
         $this->assertConfigurationIsInvalid(
-            ['surfnet_message_bird_api_client' => ['messaging' => ['originator' => 'SURFnet']]],
+            ['surfnet_message_bird_api_client' => []],
             'child node "authorization"'
         );
     }
@@ -67,23 +65,9 @@ class ConfigurationTest extends AbstractConfigurationTestCase
             [
                 'surfnet_message_bird_api_client' => [
                     'authorization' => 'AxesQuay',
-                    'messaging' => ['originator' => 'SURFnet']
                 ]
             ],
             'should be in the format \'AccessKey'
-        );
-    }
-
-    public function testMessagingOriginatorIsRequired()
-    {
-        $this->assertConfigurationIsInvalid(
-            ['surfnet_message_bird_api_client' => ['authorization' => 'AccessKey dummy']],
-            'child node "messaging"'
-        );
-
-        $this->assertConfigurationIsInvalid(
-            ['surfnet_message_bird_api_client' => ['authorization' => 'AccessKey dummy', 'messaging' => []]],
-            'child node "originator"'
         );
     }
 }

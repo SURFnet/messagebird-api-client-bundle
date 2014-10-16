@@ -2,5 +2,8 @@
 VERSION 1  MESSAGEBIRD API CLIENT BUNDLE
 ========================================
 
+   Version 1.1 - Transfers bundle config into parameters.
+      16/10/2014 12:00  1.1.0  initial release
+
    Version 1.0 - MessageBird API client bundle
       23/09/2014 10:42  1.0.1  Add release management tool.

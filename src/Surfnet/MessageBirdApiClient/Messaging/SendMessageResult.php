@@ -98,7 +98,7 @@ class SendMessageResult
 
     /**
      * @return array[] Returns the errors returned by the API as an array of arrays with
-     *                 keys int code, string message, string parameter.
+     *                 keys int code, string description, string parameter.
      */
     public function getRawErrors()
     {

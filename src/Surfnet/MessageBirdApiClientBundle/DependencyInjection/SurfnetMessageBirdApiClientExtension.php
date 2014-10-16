@@ -18,6 +18,7 @@
 
 namespace Surfnet\MessageBirdApiClientBundle\DependencyInjection;
 
+use Symfony\Component\Config\Definition\Processor;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
@@ -27,9 +28,19 @@ class SurfnetMessageBirdApiClientExtension extends Extension
 {
     public function load(array $config, ContainerBuilder $container)
     {
+        $processor = new Processor();
+        $config = $processor->processConfiguration(new Configuration(), $config);
+
+        $container->setParameter('surfnet_message_bird_api_client.base_url', $config['base_url']);
+        $container->setParameter('surfnet_message_bird_api_client.authorization', $config['authorization']);
+        $container->setParameter(
+            'surfnet_message_bird_api_client.messaging.originator',
+            $config['messaging']['originator']
+        );
+
         $loader = new YamlFileLoader(
             $container,
-            new FileLocator(__DIR__.'/../Resources/config')
+            new FileLocator(__DIR__ . '/../Resources/config')
         );
         $loader->load('services.yml');
     }

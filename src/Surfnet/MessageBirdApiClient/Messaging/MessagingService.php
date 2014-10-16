@@ -56,10 +56,10 @@ class MessagingService
             throw new InvalidArgumentException('Message originator is not a string.');
         }
 
-        if (!preg_match('~^(\d+|[a-z0-9]{1,11})$~i', $originator)) {
+        if (!preg_match('~^(\d+|[a-z0-9 _\\.\\-]{1,11})$~i', $originator)) {
             throw new DomainException(
                 'Message originator is not a valid:'
-                . ' must be a string of digits or a string consisting of 1-11 alphanumerical characters.'
+                . ' must be a string of digits or a string consisting of 1-11 characters ([a-z0-9 _\\.\\-]+).'
             );
         }
 

@@ -168,7 +168,7 @@ class MessagingServiceTest extends \PHPUnit_Framework_TestCase
     {
         return [
             'Too long'          => ['ThisIsTooLon'],
-            'InvalidCharacters' => ['its.invalid'],
+            'InvalidCharacters' => ['its+invalid'],
             'Too short'         => [''],
         ];
     }
@@ -179,6 +179,7 @@ class MessagingServiceTest extends \PHPUnit_Framework_TestCase
             'Length is max 11' => ['LengthIsOkk'],
             'Numbers can have any length' => ['3429038382929284'],
             'Minimum length is 1' => ['a'],
+            'May contain spaces, underscores, dashes and periods' => ['_SURF-net .'],
         ];
     }
 

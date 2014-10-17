@@ -61,12 +61,6 @@ class Configuration implements ConfigurationInterface
                             ->end()
                         ->isRequired()
                     ->end()
-                    ->arrayNode('messaging')
-                        ->isRequired()
-                        ->children()
-                            ->scalarNode('originator')->isRequired()->end()
-                        ->end()
-                    ->end()
                 ->end();
 
         return $treeBuilder;

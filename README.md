@@ -19,13 +19,10 @@ A Symfony2 bundle to integrate MessageBird's messaging service.
     }
     ```
 
- * Configure your MessageBird access key and the originator
+ * Configure your MessageBird access key
     ```yml
     surfnet_messagebird_api_client:
       authorization: 'AccessKey test_xxxxxxxxx'
-      messaging:
-        # Max 11 alphanumeric chars or a telephone number (31612345678)
-        originator: 'YourCompany'
     ```
 
 ## Usage
@@ -36,6 +33,7 @@ A Symfony2 bundle to integrate MessageBird's messaging service.
 public function fooAction()
 {
     $message = new \Surfnet\MessageBirdApiClient\Messaging\Message(
+        'SURFnet',
         '31612345678',
         'Your one-time SMS security token: 9832'
     );

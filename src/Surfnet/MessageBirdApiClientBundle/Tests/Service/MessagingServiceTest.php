@@ -28,7 +28,7 @@ class MessagingServiceTest extends \PHPUnit_Framework_TestCase
 {
     public function testItReturnsSuccessfully()
     {
-        $message = new Message('31612345678', 'body');
+        $message = new Message('SURFnet', '31612345678', 'body');
         $result = new SendMessageResult(SendMessageResult::STATUS_DELIVERED, []);
 
         $libraryService = m::mock('Surfnet\MessageBirdApiClient\Messaging\MessagingService')
@@ -43,7 +43,7 @@ class MessagingServiceTest extends \PHPUnit_Framework_TestCase
 
     public function testItLogsInvalidMessages()
     {
-        $message = new Message('31612345678', 'body');
+        $message = new Message('SURFnet', '31612345678', 'body');
         $result = new SendMessageResult(SendMessageResult::STATUS_NOT_SENT, [['code' => SendMessageResult::ERROR_INVALID_PARAMS, 'description' => '']]);
 
         $libraryService = m::mock('Surfnet\MessageBirdApiClient\Messaging\MessagingService')
@@ -59,7 +59,7 @@ class MessagingServiceTest extends \PHPUnit_Framework_TestCase
 
     public function testItLogsInvalidAccessKeys()
     {
-        $message = new Message('31612345678', 'body');
+        $message = new Message('SURFnet', '31612345678', 'body');
         $result = new SendMessageResult(SendMessageResult::STATUS_NOT_SENT, [['code' => SendMessageResult::ERROR_REQUEST_NOT_ALLOWED, 'description' => '']]);
 
         $libraryService = m::mock('Surfnet\MessageBirdApiClient\Messaging\MessagingService')

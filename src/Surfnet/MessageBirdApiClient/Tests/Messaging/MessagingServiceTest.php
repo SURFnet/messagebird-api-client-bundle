@@ -20,51 +20,18 @@ namespace Surfnet\MessageBirdApiClient\Tests\Messaging;
 
 use GuzzleHttp\Client;
 use GuzzleHttp\Subscriber\Mock;
-use Surfnet\MessageBirdApiClient\Exception\ApiDomainException;
-use Surfnet\MessageBirdApiClient\Exception\InvalidAccessKeyException;
 use Surfnet\MessageBirdApiClient\Messaging\Message;
 use Surfnet\MessageBirdApiClient\Messaging\MessagingService;
 
 class MessagingServiceTest extends \PHPUnit_Framework_TestCase
 {
-    /**
-     * @dataProvider invalidOriginatorTypes
-     * @param mixed $originator
-     */
-    public function testItThrowsAnExceptionWhenGivenAnOriginatorOfAnInvalidType($originator)
-    {
-        $this->setExpectedException('Surfnet\MessageBirdApiClient\Exception\InvalidArgumentException');
-
-        new MessagingService(new Client, $originator);
-    }
-
-    /**
-     * @dataProvider invalidOriginatorFormats
-     * @param mixed $originator
-     */
-    public function testItThrowsAnExceptionWhenGivenAnIncorrectlyFormattedOriginator($originator)
-    {
-        $this->setExpectedException('Surfnet\MessageBirdApiClient\Exception\DomainException');
-
-        new MessagingService(new Client, $originator);
-    }
-
-    /**
-     * @dataProvider validOriginators
-     * @param mixed $originator
-     */
-    public function testItAcceptsValidOriginator($originator)
-    {
-        $this->assertNotEmpty(new MessagingService(new Client, $originator));
-    }
-
     public function testItSendsAMessage()
     {
         $http = new Client;
         $http->getEmitter()->attach(new Mock([__DIR__ . '/fixtures/it-sends-a-message.txt']));
 
-        $messaging = new MessagingService($http, 'SURFnet');
-        $result = $messaging->send(new Message('31612345678', 'This is a text message.'));
+        $messaging = new MessagingService($http);
+        $result = $messaging->send(new Message('SURFnet', '31612345678', 'This is a text message.'));
 
         $this->assertTrue($result->isSuccess());
     }
@@ -74,8 +41,8 @@ class MessagingServiceTest extends \PHPUnit_Framework_TestCase
         $http = new Client;
         $http->getEmitter()->attach(new Mock([__DIR__ . '/fixtures/it-handles-unprocessable-entities.txt']));
 
-        $messaging = new MessagingService($http, 'SURFnet');
-        $result = $messaging->send(new Message('31612345678', 'This is a text message.'));
+        $messaging = new MessagingService($http);
+        $result = $messaging->send(new Message('SURFnet', '31612345678', 'This is a text message.'));
 
         $this->assertTrue($result->isMessageInvalid());
     }
@@ -85,8 +52,8 @@ class MessagingServiceTest extends \PHPUnit_Framework_TestCase
         $http = new Client;
         $http->getEmitter()->attach(new Mock([__DIR__ . '/fixtures/it-handles-invalid-access-key.txt']));
 
-        $messaging = new MessagingService($http, 'SURFnet');
-        $result = $messaging->send(new Message('31612345678', 'This is a text message.'));
+        $messaging = new MessagingService($http);
+        $result = $messaging->send(new Message('SURFnet', '31612345678', 'This is a text message.'));
 
         $this->assertTrue($result->isAccessKeyInvalid());
         $this->assertEquals(
@@ -109,8 +76,8 @@ class MessagingServiceTest extends \PHPUnit_Framework_TestCase
 
         $http->getEmitter()->attach(new Mock([$fixture]));
 
-        $messaging = new MessagingService($http, 'SURFnet');
-        $messaging->send(new Message('31612345678', 'This is a text message.'));
+        $messaging = new MessagingService($http);
+        $messaging->send(new Message('SURFnet', '31612345678', 'This is a text message.'));
     }
 
     /**
@@ -123,8 +90,8 @@ class MessagingServiceTest extends \PHPUnit_Framework_TestCase
         $http = new Client;
         $http->getEmitter()->attach(new Mock([$fixture]));
 
-        $messaging = new MessagingService($http, 'SURFnet');
-        $result = $messaging->send(new Message('31612345678', 'This is a text message.'));
+        $messaging = new MessagingService($http);
+        $result = $messaging->send(new Message('SURFnet', '31612345678', 'This is a text message.'));
 
         $this->assertFalse($result->isSuccess());
         $this->assertEquals($errorString, $result->getErrorsAsString());
@@ -137,8 +104,8 @@ class MessagingServiceTest extends \PHPUnit_Framework_TestCase
         $http = new Client;
         $http->getEmitter()->attach(new Mock([__DIR__ . '/fixtures/201-json-error.txt']));
 
-        $messaging = new MessagingService($http, 'SURFnet');
-        $messaging->send(new Message('31612345678', 'This is a text message.'));
+        $messaging = new MessagingService($http);
+        $messaging->send(new Message('SURFnet', '31612345678', 'This is a text message.'));
     }
 
     public function testThrowsApiRuntimeExceptionWhenUnknownStatusCode()
@@ -151,35 +118,8 @@ class MessagingServiceTest extends \PHPUnit_Framework_TestCase
         $http = new Client;
         $http->getEmitter()->attach(new Mock([__DIR__ . '/fixtures/101-switching-protocols.txt']));
 
-        $messaging = new MessagingService($http, 'SURFnet');
-        $messaging->send(new Message('31612345678', 'This is a text message.'));
-    }
-
-    public function invalidOriginatorTypes()
-    {
-        return [
-            'Integer instead of string' => [0],
-            'NULL instead of string'    => [null],
-            'object instead of string'  => [new \stdClass],
-        ];
-    }
-
-    public function invalidOriginatorFormats()
-    {
-        return [
-            'Too long'          => ['ThisIsTooLon'],
-            'InvalidCharacters' => ['its.invalid'],
-            'Too short'         => [''],
-        ];
-    }
-
-    public function validOriginators()
-    {
-        return [
-            'Length is max 11' => ['LengthIsOkk'],
-            'Numbers can have any length' => ['3429038382929284'],
-            'Minimum length is 1' => ['a'],
-        ];
+        $messaging = new MessagingService($http);
+        $messaging->send(new Message('SURFnet', '31612345678', 'This is a text message.'));
     }
 
     public function other4xxStatusCodes()

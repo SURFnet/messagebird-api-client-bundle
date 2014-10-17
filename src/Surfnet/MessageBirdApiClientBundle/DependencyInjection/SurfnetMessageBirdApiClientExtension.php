@@ -33,10 +33,6 @@ class SurfnetMessageBirdApiClientExtension extends Extension
 
         $container->setParameter('surfnet_message_bird_api_client.base_url', $config['base_url']);
         $container->setParameter('surfnet_message_bird_api_client.authorization', $config['authorization']);
-        $container->setParameter(
-            'surfnet_message_bird_api_client.messaging.originator',
-            $config['messaging']['originator']
-        );
 
         $loader = new YamlFileLoader(
             $container,

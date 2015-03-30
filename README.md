@@ -21,7 +21,7 @@ A Symfony2 bundle to integrate MessageBird's messaging service.
 
  * Configure your MessageBird access key
     ```yml
-    surfnet_messagebird_api_client:
+    surfnet_message_bird_api_client:
       authorization: 'AccessKey test_xxxxxxxxx'
     ```
 

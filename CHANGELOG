@@ -2,6 +2,9 @@
 VERSION 2  MESSAGE-LEVEL ORIGINATORS
 ====================================
 
+   Version 2.2 - Increased compatibility with libraries
+      03/02/2016 15:47  2.2.0  initial release
+
    Version 2.1 - Doc update, build update
       19/06/2015 11:39  2.1.0  initial release
 

@@ -16,14 +16,14 @@ services:
     surfnet_message_bird_api_client.messaging:
         class: Surfnet\MessageBirdApiClientBundle\Service\MessagingService
         arguments:
-            - @surfnet_message_bird_api_client.library.messaging_service
-            - @logger
+            - "@surfnet_message_bird_api_client.library.messaging_service"
+            - "@logger"
 
     surfnet_message_bird_api_client.library.messaging_service:
         public: false
         class: Surfnet\MessageBirdApiClient\Messaging\MessagingService
         arguments:
-            - @surfnet_message_bird_api_client.library.guzzle
+            - "@surfnet_message_bird_api_client.library.guzzle"
 
     surfnet_message_bird_api_client.library.guzzle:
         public: false

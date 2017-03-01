@@ -1,21 +1,3 @@
-HTTP/1.1 401 Authorization Required
-Access-Control-Allow-Credentials: true
-Access-Control-Allow-Headers: Authorization
-Access-Control-Allow-Methods: GET, POST, PUT, DELETE
-Access-Control-Allow-Origin: http://support.messagebird.com
-Cache-Control: no-cache, must-revalidate
-Connection: close
-Content-Length: 363
-Content-Type: application/json
-Date: Mon, 15 Sep 2014 14:16:13 GMT
-Expires: 0
-Pragma: no-cache
-Server: Apache
-Vary: Authorization
-WWW-Authenticate: Basic realm="MessageBird API authentication"
-X-Powered-By: PHP/5.5.12-1~dotdeb.1
-X-UA-Compatible: IE=edge,chrome=1
-
 {
     "errors": [
         {

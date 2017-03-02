@@ -55,7 +55,7 @@ class MessagingService
                 'recipients' => $message->getRecipient(),
                 'body'       => $message->getBody(),
             ],
-            'exceptions' => false,
+            'http_errors' => false,
         ]);
 
         try {

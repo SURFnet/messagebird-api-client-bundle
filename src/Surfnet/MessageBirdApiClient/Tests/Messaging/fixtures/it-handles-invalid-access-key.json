@@ -1,0 +1,19 @@
+{
+    "errors": [
+        {
+            "code": 2,
+            "description": "Request not allowed (incorrect access_key)",
+            "parameter": "access_key"
+        },
+        {
+            "code": 9,
+            "description": "no (correct) recipients found",
+            "parameter": "recipient"
+        },
+        {
+            "code": 10,
+            "description": "originator is invalid",
+            "parameter": "originator"
+        }
+    ]
+}

@@ -1,0 +1,14 @@
+{
+    "errors": [
+        {
+            "code": 9,
+            "description": "no (correct) recipients found",
+            "parameter": "recipient"
+        },
+        {
+            "code": 10,
+            "description": "originator is invalid",
+            "parameter": "originator"
+        }
+    ]
+}

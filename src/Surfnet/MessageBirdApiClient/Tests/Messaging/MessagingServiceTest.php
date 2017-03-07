@@ -19,7 +19,8 @@
 namespace Surfnet\MessageBirdApiClient\Tests\Messaging;
 
 use GuzzleHttp\Client;
-use GuzzleHttp\Subscriber\Mock;
+use GuzzleHttp\Handler\MockHandler;
+use GuzzleHttp\Psr7\Response;
 use Surfnet\MessageBirdApiClient\Messaging\Message;
 use Surfnet\MessageBirdApiClient\Messaging\MessagingService;
 
@@ -27,8 +28,15 @@ class MessagingServiceTest extends \PHPUnit_Framework_TestCase
 {
     public function testItSendsAMessage()
     {
-        $http = new Client;
-        $http->getEmitter()->attach(new Mock([__DIR__ . '/fixtures/it-sends-a-message.txt']));
+        $handler = new MockHandler([
+            new Response(
+                200,
+                [],
+                file_get_contents(__DIR__ . '/fixtures/it-sends-a-message.json')
+            )
+        ]);
+
+        $http = new Client(['handler' => $handler]);
 
         $messaging = new MessagingService($http);
         $result = $messaging->send(new Message('SURFnet', '31612345678', 'This is a text message.'));
@@ -38,8 +46,11 @@ class MessagingServiceTest extends \PHPUnit_Framework_TestCase
 
     public function testHandlesUnprocessableEntities()
     {
-        $http = new Client;
-        $http->getEmitter()->attach(new Mock([__DIR__ . '/fixtures/it-handles-unprocessable-entities.txt']));
+        $handler = new MockHandler([
+            new Response(422, [], file_get_contents(__DIR__ . '/fixtures/it-handles-unprocessable-entities.json'))
+        ]);
+
+        $http = new Client(['handler' => $handler]);
 
         $messaging = new MessagingService($http);
         $result = $messaging->send(new Message('SURFnet', '31612345678', 'This is a text message.'));
@@ -49,8 +60,11 @@ class MessagingServiceTest extends \PHPUnit_Framework_TestCase
 
     public function testHandlesInvalidAccessKey()
     {
-        $http = new Client;
-        $http->getEmitter()->attach(new Mock([__DIR__ . '/fixtures/it-handles-invalid-access-key.txt']));
+        $handler = new MockHandler([
+            new Response(401, [], file_get_contents(__DIR__ . '/fixtures/it-handles-invalid-access-key.json'))
+        ]);
+
+        $http = new Client(['handler' => $handler]);
 
         $messaging = new MessagingService($http);
         $result = $messaging->send(new Message('SURFnet', '31612345678', 'This is a text message.'));
@@ -68,13 +82,15 @@ class MessagingServiceTest extends \PHPUnit_Framework_TestCase
      * @param string $fixture Filename to HTTP response fixture.
      * @param string $errorString
      */
-    public function testThrowsApiDomainExceptionsOnOther4xxStatusCodes($fixture, $errorString)
+    public function testThrowsApiDomainExceptionsOnOther4xxStatusCodes($statusCode, $fixture, $errorString)
     {
         $this->setExpectedException('Surfnet\MessageBirdApiClient\Exception\ApiRuntimeException', $errorString);
 
-        $http = new Client;
+        $handler = new MockHandler([
+            new Response($statusCode, [], file_get_contents($fixture))
+        ]);
 
-        $http->getEmitter()->attach(new Mock([$fixture]));
+        $http = new Client(['handler' => $handler]);
 
         $messaging = new MessagingService($http);
         $messaging->send(new Message('SURFnet', '31612345678', 'This is a text message.'));
@@ -85,10 +101,13 @@ class MessagingServiceTest extends \PHPUnit_Framework_TestCase
      * @param string $fixture Filename to HTTP response fixture.
      * @param string $errorString
      */
-    public function testHandlesOther5xxStatusCodes($fixture, $errorString)
+    public function testHandlesOther5xxStatusCodes($statusCode, $fixture, $errorString)
     {
-        $http = new Client;
-        $http->getEmitter()->attach(new Mock([$fixture]));
+        $handler = new MockHandler([
+            new Response($statusCode, [], file_get_contents($fixture))
+        ]);
+
+        $http = new Client(['handler' => $handler]);
 
         $messaging = new MessagingService($http);
         $result = $messaging->send(new Message('SURFnet', '31612345678', 'This is a text message.'));
@@ -101,9 +120,11 @@ class MessagingServiceTest extends \PHPUnit_Framework_TestCase
     {
         $this->setExpectedException('Surfnet\MessageBirdApiClient\Exception\ApiRuntimeException', 'valid JSON');
 
-        $http = new Client;
-        $http->getEmitter()->attach(new Mock([__DIR__ . '/fixtures/201-json-error.txt']));
+        $handler = new MockHandler([
+            new Response(201, [], 'This is not valid JSON.')
+        ]);
 
+        $http = new Client(['handler' => $handler]);
         $messaging = new MessagingService($http);
         $messaging->send(new Message('SURFnet', '31612345678', 'This is a text message.'));
     }
@@ -115,9 +136,11 @@ class MessagingServiceTest extends \PHPUnit_Framework_TestCase
             'Unexpected MessageBird server behaviour'
         );
 
-        $http = new Client;
-        $http->getEmitter()->attach(new Mock([__DIR__ . '/fixtures/101-switching-protocols.txt']));
+        $handler = new MockHandler([
+            new Response(101, [])
+        ]);
 
+        $http = new Client(['handler' => $handler]);
         $messaging = new MessagingService($http);
         $messaging->send(new Message('SURFnet', '31612345678', 'This is a text message.'));
     }
@@ -125,16 +148,16 @@ class MessagingServiceTest extends \PHPUnit_Framework_TestCase
     public function other4xxStatusCodes()
     {
         return [
-            [__DIR__ . '/fixtures/other-4xx-406.txt', '(#20) message not found'],
-            [__DIR__ . '/fixtures/other-4xx-415.txt', ''],
+            [406, __DIR__ . '/fixtures/other-4xx-406.json', '(#20) message not found'],
+            [415, __DIR__ . '/fixtures/other-4xx-415.json', ''],
         ];
     }
 
     public function other5xxStatusCodes()
     {
         return [
-            [__DIR__ . '/fixtures/502-bad-gateway.txt', '(#9) no (correct) recipients found'],
-            [__DIR__ . '/fixtures/503-service-unavailable.txt', ''],
+            [502, __DIR__ . '/fixtures/502-bad-gateway.json', '(#9) no (correct) recipients found'],
+            [503, __DIR__ . '/fixtures/503-service-unavailable.json', ''],
         ];
     }
 }

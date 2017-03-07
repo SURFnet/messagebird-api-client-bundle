@@ -18,25 +18,24 @@
 
 namespace Surfnet\MessageBirdApiClient\Messaging;
 
-use GuzzleHttp\ClientInterface;
+use GuzzleHttp\Client;
 use GuzzleHttp\Exception\TransferException;
 use Surfnet\MessageBirdApiClient\Exception\ApiRuntimeException;
-use Surfnet\MessageBirdApiClient\Exception\DomainException;
-use Surfnet\MessageBirdApiClient\Exception\InvalidArgumentException;
+use Surfnet\MessageBirdApiClient\Helper\JsonHelper;
 
 class MessagingService
 {
     /**
      * A Guzzle client, configured with MessageBird's API base url and a valid Authorization header.
      *
-     * @var ClientInterface
+     * @var Client
      */
     private $guzzleClient;
 
     /**
-     * @param ClientInterface $guzzleClient
+     * @param Client $guzzleClient
      */
-    public function __construct(ClientInterface $guzzleClient)
+    public function __construct(Client $guzzleClient)
     {
         $this->guzzleClient = $guzzleClient;
     }
@@ -56,11 +55,11 @@ class MessagingService
                 'recipients' => $message->getRecipient(),
                 'body'       => $message->getBody(),
             ],
-            'exceptions' => false,
+            'http_errors' => false,
         ]);
 
         try {
-            $document = $response->json();
+            $document = JsonHelper::decode((string) $response->getBody());
         } catch (\RuntimeException $e) {
             throw new ApiRuntimeException('The MessageBird server did not return valid JSON.', [], $e);
         }

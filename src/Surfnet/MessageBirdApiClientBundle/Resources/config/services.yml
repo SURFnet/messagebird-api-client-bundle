@@ -29,4 +29,4 @@ services:
         public: false
         class: GuzzleHttp\Client
         arguments:
-            - { base_uri: %surfnet_message_bird_api_client.base_url%, headers: { Authorization: %surfnet_message_bird_api_client.authorization% } }
+            - { base_uri: "%surfnet_message_bird_api_client.base_url%", headers: { Authorization: "%surfnet_message_bird_api_client.authorization%" } }

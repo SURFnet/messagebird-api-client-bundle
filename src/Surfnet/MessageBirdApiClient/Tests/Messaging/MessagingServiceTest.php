@@ -149,7 +149,7 @@ class MessagingServiceTest extends \PHPUnit_Framework_TestCase
     {
         return [
             [406, __DIR__ . '/fixtures/other-4xx-406.json', '(#20) message not found'],
-            [415, __DIR__ . '/fixtures/other-4xx-415.json', ''],
+            [415, __DIR__ . '/fixtures/other-4xx-415.json', 'Unexpected MessageBird server behaviour (HTTP 415)'],
         ];
     }
 

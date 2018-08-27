@@ -1,4 +1,7 @@
+# 4.0.0
+This release dropped PHP 5.5 support and introduced Symfony 3.4 support.
 
+# Previous (RMT style) release notes
 VERSION 3  DROPPED SUPPORT FOR PHP 5.4. UPDATED GUZZLE TO GUZZLE 6.
 ===================================================================
 

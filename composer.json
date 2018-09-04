@@ -30,7 +30,6 @@
         "sebastian/phpcpd": "^2.0",
         "squizlabs/php_codesniffer": "^1.0",
         "symfony/phpunit-bridge": "^3.0",
-        "mockery/mockery": "~0.9.5",
-        "liip/rmt": "1.1.*"
+        "mockery/mockery": "~0.9.5"
     }
 }

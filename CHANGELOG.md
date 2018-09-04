@@ -1,7 +1,13 @@
+# 4.0.1
+Removed RMT, added CHANGELOG.ml
+
 # 4.0.0
 This release dropped PHP 5.5 support and introduced Symfony 3.4 support.
 
 # Previous (RMT style) release notes
+
+See: https://github.com/SURFnet/messagebird-api-client-bundle/releases
+
 VERSION 3  DROPPED SUPPORT FOR PHP 5.4. UPDATED GUZZLE TO GUZZLE 6.
 ===================================================================
 

@@ -18,11 +18,13 @@
 
 namespace Surfnet\MessageBirdApiClientBundle\Tests\DependencyInjection;
 
-use Matthias\SymfonyConfigTest\PhpUnit\AbstractConfigurationTestCase;
+use Matthias\SymfonyConfigTest\PhpUnit\ConfigurationTestCaseTrait;
 use Surfnet\MessageBirdApiClientBundle\DependencyInjection\Configuration;
 
-class ConfigurationTest extends AbstractConfigurationTestCase
+class ConfigurationTest extends \PHPUnit_Framework_TestCase
 {
+    use ConfigurationTestCaseTrait;
+
     protected function getConfiguration()
     {
         return new Configuration;

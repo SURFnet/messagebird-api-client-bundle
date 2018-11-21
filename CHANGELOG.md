@@ -1,3 +1,6 @@
+# Unreleased
+* Add Symfony 4 support
+
 # 4.0.1
 Removed RMT, added CHANGELOG.ml
 

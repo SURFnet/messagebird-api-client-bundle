@@ -137,7 +137,7 @@ class MessagingServiceTest extends \PHPUnit_Framework_TestCase
         );
 
         $handler = new MockHandler([
-            new Response(101, [])
+            new Response(101, [], '[]')
         ]);
 
         $http = new Client(['handler' => $handler]);

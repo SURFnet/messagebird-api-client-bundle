@@ -1,8 +1,8 @@
-# Unreleased
-* Add Symfony 4 support
+# 4.1.0
+Add Symfony 4 support
 
 # 4.0.1
-Removed RMT, added CHANGELOG.ml
+Removed RMT, added CHANGELOG.md
 
 # 4.0.0
 This release dropped PHP 5.5 support and introduced Symfony 3.4 support.

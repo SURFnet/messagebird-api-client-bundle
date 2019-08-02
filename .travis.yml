@@ -17,6 +17,7 @@ cache:
     - ~/.composer
 
 before_script:
+  - sudo apt-get install ant
   - phpenv config-add .travis.php.ini
   - composer self-update
   - composer install --prefer-dist

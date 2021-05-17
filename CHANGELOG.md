@@ -1,3 +1,6 @@
+# 4.1.1
+Abandon the messagebird-api-client-bundle #17
+
 # 4.1.0
 Add Symfony 4 support
 

@@ -1,13 +1,16 @@
 # MessageBird API Client Bundle
 [![Build Status](https://travis-ci.org/SURFnet/messagebird-api-client-bundle.svg)](https://travis-ci.org/SURFnet/messagebird-api-client-bundle) [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/SURFnet/messagebird-api-client-bundle/badges/quality-score.png?b=develop)](https://scrutinizer-ci.com/g/SURFnet/messagebird-api-client-bundle/?branch=develop) [![SensioLabs Insight](https://insight.sensiolabs.com/projects/12ce0c8c-26c1-4d08-bca3-563f04519936/mini.png)](https://insight.sensiolabs.com/projects/12ce0c8c-26c1-4d08-bca3-563f04519936)
 
-A Symfony2 bundle to integrate MessageBird's messaging service.
+A Symfony 3 bundle (with Symfony 4 support) to integrate MessageBird's messaging service.
+
+## End of life warning
+We've decided to stop maintaining this bundle because we're moving to Spryng. Contact us if you are interested in taking over maintenance of this bundle.
 
 ## Installation
 
  * Add the package to your Composer file
     ```sh
-    composer require surfnet/messagebird-api-client-bundle:~1.0
+    composer require surfnet/messagebird-api-client-bundle
     ```
 
  * Add the bundle to your kernel in `app/AppKernel.php`
@@ -49,4 +52,4 @@ public function fooAction()
 ```
 
 ## Release strategy
-Please read: https://github.com/OpenConext/Stepup-Deploy/wiki/Release-Management fro more information on the release strategy used in Stepup projects.
+Please read: https://github.com/OpenConext/Stepup-Deploy/wiki/Release-Management for more information on the release strategy used in Stepup projects.

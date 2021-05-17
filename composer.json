@@ -1,6 +1,7 @@
 {
     "name": "surfnet/messagebird-api-client-bundle",
-    "description": "A Symfony2 bundle to integrate MessageBird's messaging service.",
+    "abandoned": true
+    "description": "A Symfony 3 & 4 bundle to integrate MessageBird's messaging service.",
     "keywords": [
         "messagebird",
         "sms",

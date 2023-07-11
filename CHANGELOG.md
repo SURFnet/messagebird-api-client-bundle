@@ -1,4 +1,4 @@
-# 4.1.2
+# 4.1.3
 Make Configuration parser SF 5 compatible 
 
 # 4.1.1

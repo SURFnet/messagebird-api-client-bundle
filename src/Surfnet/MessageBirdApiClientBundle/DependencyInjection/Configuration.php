@@ -28,7 +28,7 @@ class Configuration implements ConfigurationInterface
 {
     public function getConfigTreeBuilder()
     {
-        $treeBuilder = new TreeBuilder('surfnet_message_bird_api_client', 'string' );
+        $treeBuilder = new TreeBuilder('surfnet_message_bird_api_client');
 
         $rootNode = $treeBuilder->getRootNode();
 
@@ -64,6 +64,6 @@ class Configuration implements ConfigurationInterface
                 ->end()
             ->end();
 
-        return $rootNode;
+        return $treeBuilder;
     }
 }

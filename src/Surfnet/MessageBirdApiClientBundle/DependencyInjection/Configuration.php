@@ -28,41 +28,42 @@ class Configuration implements ConfigurationInterface
 {
     public function getConfigTreeBuilder()
     {
-        $treeBuilder = new TreeBuilder;
+        $treeBuilder = new TreeBuilder('surfnet_message_bird_api_client', 'string' );
 
-        $treeBuilder
-            ->root('surfnet_message_bird_api_client')
-                ->children()
-                    ->scalarNode('base_url')
-                        ->defaultValue('https://rest.messagebird.com')
-                        ->validate()
-                            ->ifTrue(function ($url) {
-                                if (!is_string($url)) {
-                                    return true;
-                                }
+        $rootNode = $treeBuilder->getRootNode();
 
-                                $parts = parse_url($url);
+        $rootNode
+            ->children()
+                ->scalarNode('base_url')
+                    ->defaultValue('https://rest.messagebird.com')
+                    ->validate()
+                        ->ifTrue(function ($url) {
+                            if (!is_string($url)) {
+                                return true;
+                            }
 
-                                return $parts === false
-                                    || empty($parts['scheme'])
-                                    || empty($parts['host']);
-                            })
-                            ->thenInvalid("Invalid base URL '%s': scheme and host are required.")
+                            $parts = parse_url($url);
+
+                            return $parts === false
+                                || empty($parts['scheme'])
+                                || empty($parts['host']);
+                        })
+                        ->thenInvalid("Invalid base URL '%s': scheme and host are required.")
+                    ->end()
+                ->end()
+                ->scalarNode('authorization')
+                    ->validate()
+                        ->ifTrue(function ($headerValue) {
+                            return strpos($headerValue, 'AccessKey ') !== 0;
+                        })
+                            ->thenInvalid(
+                                "Authorization value '%s' should be in the format 'AccessKey your_access_key_here'."
+                            )
                         ->end()
-                    ->end()
-                    ->scalarNode('authorization')
-                        ->validate()
-                            ->ifTrue(function ($headerValue) {
-                                return strpos($headerValue, 'AccessKey ') !== 0;
-                            })
-                                ->thenInvalid(
-                                    "Authorization value '%s' should be in the format 'AccessKey your_access_key_here'."
-                                )
-                            ->end()
-                        ->isRequired()
-                    ->end()
-                ->end();
+                    ->isRequired()
+                ->end()
+            ->end();
 
-        return $treeBuilder;
+        return $rootNode;
     }
 }

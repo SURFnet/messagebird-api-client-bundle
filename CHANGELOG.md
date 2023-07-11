@@ -1,3 +1,6 @@
+# 4.1.2
+Make Configuration parser SF 5 compatible 
+
 # 4.1.1
 Abandon the messagebird-api-client-bundle #17
 

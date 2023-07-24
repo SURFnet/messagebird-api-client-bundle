@@ -19,9 +19,10 @@
 namespace Surfnet\MessageBirdApiClientBundle\Tests\DependencyInjection;
 
 use Matthias\SymfonyConfigTest\PhpUnit\ConfigurationTestCaseTrait;
+use PHPUnit\Framework\TestCase;
 use Surfnet\MessageBirdApiClientBundle\DependencyInjection\Configuration;
 
-class ConfigurationTest extends \PHPUnit_Framework_TestCase
+class ConfigurationTest extends TestCase
 {
     use ConfigurationTestCaseTrait;
 
@@ -57,7 +58,7 @@ class ConfigurationTest extends \PHPUnit_Framework_TestCase
     {
         $this->assertConfigurationIsInvalid(
             ['surfnet_message_bird_api_client' => []],
-            'child node "authorization"'
+            'child config "authorization"'
         );
     }
 

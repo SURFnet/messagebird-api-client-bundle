@@ -18,9 +18,10 @@
 
 namespace Surfnet\MessageBirdApiClient\Tests\Messaging;
 
+use PHPUnit\Framework\TestCase;
 use Surfnet\MessageBirdApiClient\Messaging\Message;
 
-class MessageTest extends \PHPUnit_Framework_TestCase
+class MessageTest extends TestCase
 {
     /**
      * @dataProvider invalidOriginatorTypes
@@ -28,7 +29,7 @@ class MessageTest extends \PHPUnit_Framework_TestCase
      */
     public function testItThrowsAnExceptionWhenGivenAnOriginatorOfAnInvalidType($originator)
     {
-        $this->setExpectedException('Surfnet\MessageBirdApiClient\Exception\InvalidArgumentException');
+        $this->expectException('Surfnet\MessageBirdApiClient\Exception\InvalidArgumentException');
 
         new Message($originator, '31612345678', 'body');
     }
@@ -39,7 +40,7 @@ class MessageTest extends \PHPUnit_Framework_TestCase
      */
     public function testItThrowsAnExceptionWhenGivenAnIncorrectlyFormattedOriginator($originator)
     {
-        $this->setExpectedException('Surfnet\MessageBirdApiClient\Exception\DomainException');
+        $this->expectException('Surfnet\MessageBirdApiClient\Exception\DomainException');
 
         new Message($originator, '31612345678', 'body');
     }
@@ -50,7 +51,9 @@ class MessageTest extends \PHPUnit_Framework_TestCase
      */
     public function testItAcceptsValidOriginator($originator)
     {
-        new Message($originator, '31612345678', 'body');
+        $message = new Message($originator, '31612345678', 'body');
+        $this->assertInstanceOf(Message::class, $message);
+
     }
 
     /**
@@ -59,7 +62,7 @@ class MessageTest extends \PHPUnit_Framework_TestCase
      */
     public function testThrowsAnInvalidArgumentExceptionWhenGivenANonStringRecipient($recipient)
     {
-        $this->setExpectedException('Surfnet\MessageBirdApiClient\Exception\InvalidArgumentException');
+        $this->expectException('Surfnet\MessageBirdApiClient\Exception\InvalidArgumentException');
 
         new Message('SURFnet', $recipient, 'body');
     }
@@ -70,7 +73,7 @@ class MessageTest extends \PHPUnit_Framework_TestCase
      */
     public function testItThrowsOnIncorrectlyFormattedRecipient($recipient)
     {
-        $this->setExpectedException('Surfnet\MessageBirdApiClient\Exception\DomainException');
+        $this->expectException('Surfnet\MessageBirdApiClient\Exception\DomainException');
 
         new Message('SURFnet', $recipient, 'body');
     }
@@ -81,7 +84,7 @@ class MessageTest extends \PHPUnit_Framework_TestCase
      */
     public function testItDetectsInvalidBody($body)
     {
-        $this->setExpectedException('Surfnet\MessageBirdApiClient\Exception\InvalidArgumentException');
+        $this->expectException('Surfnet\MessageBirdApiClient\Exception\InvalidArgumentException');
 
         new Message('SURFnet', '31612345678', $body);
     }

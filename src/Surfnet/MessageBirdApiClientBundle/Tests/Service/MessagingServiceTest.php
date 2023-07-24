@@ -20,11 +20,13 @@ namespace Surfnet\MessageBirdApiClientBundle\Tests\Service;
 
 use Mockery as m;
 use Mockery\Matcher\MatcherAbstract;
+use PHPUnit\Framework\TestCase;
+use Psr\Log\LoggerInterface;
 use Surfnet\MessageBirdApiClient\Messaging\Message;
 use Surfnet\MessageBirdApiClient\Messaging\SendMessageResult;
 use Surfnet\MessageBirdApiClientBundle\Service\MessagingService;
 
-class MessagingServiceTest extends \PHPUnit_Framework_TestCase
+class MessagingServiceTest extends TestCase
 {
     public function testItReturnsSuccessfully()
     {
@@ -46,14 +48,30 @@ class MessagingServiceTest extends \PHPUnit_Framework_TestCase
         $message = new Message('SURFnet', '31612345678', 'body');
         $result = new SendMessageResult(SendMessageResult::STATUS_NOT_SENT, [['code' => SendMessageResult::ERROR_INVALID_PARAMS, 'description' => '']]);
 
-        $libraryService = m::mock('Surfnet\MessageBirdApiClient\Messaging\MessagingService')
-            ->shouldReceive('send')->once()->with($message)->andReturn($result)
-            ->getMock();
-        $logger = m::mock('Psr\Log\LoggerInterface')
-            ->shouldReceive('notice')->once($this->expectStringContains('Invalid message sent to MessageBird'))
+        // Create a mock for Surfnet\MessageBirdApiClient\Messaging\MessagingService
+        $libraryService = $this->getMockBuilder('Surfnet\MessageBirdApiClient\Messaging\MessagingService')
+            ->disableOriginalConstructor()
             ->getMock();
 
+        // Set the expectation on the send method to be called once with $message and return $result
+        $libraryService->expects($this->once())
+            ->method('send')
+            ->with($message)
+            ->willReturn($result);
+
+        // Create a mock for Psr\Log\LoggerInterface
+        $logger = $this->getMockBuilder('Psr\Log\LoggerInterface')
+            ->getMock();
+
+        // Set the expectation on the critical method to be called once with a message containing 'Invalid access key used for MessageBird'
+        $logger->expects($this->once())
+            ->method('notice')
+            ->with($this->stringContains('Invalid message sent to MessageBird'));
+
+        // Create the MessagingService instance with the mocks
         $service = new MessagingService($libraryService, $logger);
+
+        // Invoke the send method that should trigger logging
         $service->send($message);
     }
 
@@ -62,14 +80,30 @@ class MessagingServiceTest extends \PHPUnit_Framework_TestCase
         $message = new Message('SURFnet', '31612345678', 'body');
         $result = new SendMessageResult(SendMessageResult::STATUS_NOT_SENT, [['code' => SendMessageResult::ERROR_REQUEST_NOT_ALLOWED, 'description' => '']]);
 
-        $libraryService = m::mock('Surfnet\MessageBirdApiClient\Messaging\MessagingService')
-            ->shouldReceive('send')->once()->with($message)->andReturn($result)
-            ->getMock();
-        $logger = m::mock('Psr\Log\LoggerInterface')
-            ->shouldReceive('critical')->once($this->expectStringContains('Invalid access key used for MessageBird'))
+        // Create a mock for Surfnet\MessageBirdApiClient\Messaging\MessagingService
+        $libraryService = $this->getMockBuilder('Surfnet\MessageBirdApiClient\Messaging\MessagingService')
+            ->disableOriginalConstructor()
             ->getMock();
 
+        // Set the expectation on the send method to be called once with $message and return $result
+        $libraryService->expects($this->once())
+            ->method('send')
+            ->with($message)
+            ->willReturn($result);
+
+        // Create a mock for Psr\Log\LoggerInterface
+        $logger = $this->getMockBuilder(LoggerInterface::class)
+            ->getMock();
+
+        // Set the expectation on the critical method to be called once with a message containing 'Invalid access key used for MessageBird'
+        $logger->expects($this->once())
+            ->method('critical')
+            ->with($this->stringContains('Invalid access key used for MessageBird'));
+
+        // Create the MessagingService instance with the mocks
         $service = new MessagingService($libraryService, $logger);
+
+        // Invoke the send method that should trigger logging
         $service->send($message);
     }
 
@@ -83,4 +117,12 @@ class MessagingServiceTest extends \PHPUnit_Framework_TestCase
             return strpos($string, $contains) !== false;
         });
     }
+
+    protected function tearDown(): void
+    {
+        m::close();
+        parent::tearDown();
+    }
+
+
 }

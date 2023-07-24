@@ -21,10 +21,11 @@ namespace Surfnet\MessageBirdApiClient\Tests\Messaging;
 use GuzzleHttp\Client;
 use GuzzleHttp\Handler\MockHandler;
 use GuzzleHttp\Psr7\Response;
+use PHPUnit\Framework\TestCase;
 use Surfnet\MessageBirdApiClient\Messaging\Message;
 use Surfnet\MessageBirdApiClient\Messaging\MessagingService;
 
-class MessagingServiceTest extends \PHPUnit_Framework_TestCase
+class MessagingServiceTest extends TestCase
 {
     public function testItSendsAMessage()
     {
@@ -84,7 +85,7 @@ class MessagingServiceTest extends \PHPUnit_Framework_TestCase
      */
     public function testThrowsApiDomainExceptionsOnOther4xxStatusCodes($statusCode, $fixture, $errorString)
     {
-        $this->setExpectedException('Surfnet\MessageBirdApiClient\Exception\ApiRuntimeException', $errorString);
+        $this->expectException('Surfnet\MessageBirdApiClient\Exception\ApiRuntimeException', $errorString);
 
         $handler = new MockHandler([
             new Response($statusCode, [], file_get_contents($fixture))
@@ -118,7 +119,7 @@ class MessagingServiceTest extends \PHPUnit_Framework_TestCase
 
     public function testThrowsApiRuntimeExceptionsOnBrokenJson()
     {
-        $this->setExpectedException('Surfnet\MessageBirdApiClient\Exception\ApiRuntimeException', 'valid JSON');
+        $this->expectException('Surfnet\MessageBirdApiClient\Exception\ApiRuntimeException', 'valid JSON');
 
         $handler = new MockHandler([
             new Response(201, [], 'This is not valid JSON.')
@@ -131,7 +132,7 @@ class MessagingServiceTest extends \PHPUnit_Framework_TestCase
 
     public function testThrowsApiRuntimeExceptionWhenUnknownStatusCode()
     {
-        $this->setExpectedException(
+        $this->expectException(
             'Surfnet\MessageBirdApiClient\Exception\ApiRuntimeException',
             'Unexpected MessageBird server behaviour'
         );

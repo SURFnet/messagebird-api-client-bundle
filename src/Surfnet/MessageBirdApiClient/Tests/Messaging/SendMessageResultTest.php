@@ -18,9 +18,10 @@
 
 namespace Surfnet\MessageBirdApiClient\Tests\Messaging;
 
+use PHPUnit\Framework\TestCase;
 use Surfnet\MessageBirdApiClient\Messaging\SendMessageResult;
 
-class SendMessageResultTest extends \PHPUnit_Framework_TestCase
+class SendMessageResultTest extends TestCase
 {
     /**
      * @dataProvider nonStringDeliveryStatuses
@@ -28,7 +29,7 @@ class SendMessageResultTest extends \PHPUnit_Framework_TestCase
      */
     public function testItOnlyAcceptsStringDeliveryStatus($deliveryStatus)
     {
-        $this->setExpectedException(
+        $this->expectException(
             'Surfnet\MessageBirdApiClient\Exception\InvalidArgumentException',
             'Delivery status must be string'
         );
